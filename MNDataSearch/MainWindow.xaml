@@ -1,0 +1,147 @@
+﻿<Window x:Class="MNDataSearch.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"  
+        Title="DataSearch" WindowState="Maximized" Icon="Images/logo.png">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Name="MWHeader" Height="100" />
+            <RowDefinition Height="80"/>
+            <RowDefinition Height="50" />
+            <RowDefinition Height="35"/>
+            <RowDefinition />
+            <RowDefinition Height="30"/>
+
+        </Grid.RowDefinitions>
+
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="auto"/>
+            <ColumnDefinition />
+            <ColumnDefinition Width="30"/>
+        </Grid.ColumnDefinitions>
+
+        <Border Grid.Row="0" Grid.Column="0" Grid.RowSpan="6">
+            <Border.Background>
+                <LinearGradientBrush >
+                    <GradientStopCollection>
+                        <GradientStop Color="Gray" Offset="0.5" />
+                        <GradientStop Color="LightBlue"/>
+                    </GradientStopCollection>
+                </LinearGradientBrush>
+            </Border.Background>
+
+        </Border>
+ 
+        <Border Grid.Row="0" Grid.Column="1" Grid.RowSpan="6" Grid.ColumnSpan="2">
+            <Border.Background>
+                <LinearGradientBrush >
+                    <GradientStopCollection>
+                        <GradientStop Color="AliceBlue" Offset="0.5" />
+                        <GradientStop Color="LightBlue"/>
+                    </GradientStopCollection>
+                </LinearGradientBrush>
+            </Border.Background>
+        </Border>
+        <StackPanel Grid.Row="0" Grid.Column="0" Grid.RowSpan="6" Orientation="Vertical" HorizontalAlignment="Center" 
+                    VerticalAlignment="Top"> 
+            <Image  Source="Images/MainpageLogo.png" Height="300" Width="500" Margin="15" />
+            <TextBlock TextWrapping="Wrap" Width="500" TextAlignment="Justify" FontSize="13" Foreground="White" Margin="10,-10,10,0" Text="Films Division of India was established in 1948 to articulate the energy of a newly independent nation. For more than six decades, the organization has relentlessly striven to maintain a record of the social, political and cultural imaginations and realities of the country on film. It has actively worked in encouraging and promoting a culture of film-making in India that respects individual vision and social commitment." />
+            <TextBlock TextWrapping="Wrap" Width="500" TextAlignment="Justify" FontSize="13" Foreground="White" Margin="10,10,10,0" Text="It is the main film-medium organization of the Government of India and is well equipped with trained film personnel, cameras, recording and editing facilities. This infrastructure is put to use to assist in-house as well as free-lance film makers and producers." />
+            <TextBlock TextWrapping="Wrap" Width="500" TextAlignment="Justify" FontSize="13" Foreground="White" Margin="10,10,10,0" Text="In its archives, the Films Division of India holds more than 8000 titles including priceless INRs (Indian News Review), documentaries, short films and animation films."/>
+
+            <Button Content="Go To Website" Background="DarkGray" Foreground="White" Height="25" Width="120"
+                    Margin="0,20,15,0" FontSize="13" HorizontalAlignment="Right" VerticalAlignment="Center" Click="Button_Click" />
+        </StackPanel>
+
+        <Image Grid.Row="1" Grid.Column="1" Source="Images/logo.png" Height="80" Width="80" Margin="0,-60,0,0" />
+        <TextBlock Grid.Row="1" Grid.Column="1" FontSize="18" Foreground="Gray" Text="Films Division Catalogue" VerticalAlignment="Bottom" HorizontalAlignment="Center" />
+
+        <StackPanel Grid.Row="2" Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
+            <TextBlock  Text="Search For Title: " TextAlignment="Right" VerticalAlignment="Center" />
+            <TextBox Name="txtSearch" FontSize="16" Foreground="Gray" Width="400" Padding="5" Margin="5" Text="{Binding ElementName=txtTitle,Path=Text,Mode=TwoWay}"/>
+            <Button Content="Search" Name="btnSearch" Width="80" Height="34" Click="btnAdvSearch_Click"/>
+        </StackPanel>
+        
+        <Button Content="Advance Search" Name="btnAdvSearchClick" Grid.Column="1" Grid.Row="3" Height="33" Width="120" HorizontalAlignment="Center" VerticalAlignment="Center" Click="btnAdvSearchClick_Click"/>
+        
+        <Border Name="brAdvSearch" Grid.Row="3" Grid.RowSpan="2" Grid.Column="1" CornerRadius="6"  VerticalAlignment="Top"  HorizontalAlignment="Stretch" Width="650"
+                BorderBrush="Gray"
+                Background="LightGray"
+                BorderThickness="1" >
+            <StackPanel  Margin="5"    VerticalAlignment="Top"  HorizontalAlignment="Stretch" Width="650" >
+                <Grid  Background="White" Name="gridFilter" DataContext="{Binding}">
+                    <Grid.Resources>
+                        <Style TargetType="TextBlock">
+                            <Setter Property="FontSize" Value="12"/>
+                            <Setter Property="Margin" Value="5" />
+                        </Style>
+                    </Grid.Resources>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="2"/>
+                        <RowDefinition Height="80"/>
+                        <RowDefinition Height="30"/>
+                        <RowDefinition Height="30"/>
+                        <RowDefinition Height="30"/>
+                        <RowDefinition Height="30"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="35"/>
+                    </Grid.RowDefinitions>
+
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="100"/>
+                        <ColumnDefinition Width="220"/>
+                        <ColumnDefinition Width="100"/>
+                        <ColumnDefinition Width="220"/>
+                    </Grid.ColumnDefinitions>
+
+                    <TextBlock Grid.Row="1" Text="Category:"  VerticalAlignment="Top" />
+                    <ListBox  Grid.Row="1" Grid.Column="1"  Name="lbCategory"  VerticalAlignment="Stretch" Margin="5" SelectionChanged="lbCategory_SelectionChanged" />
+
+                    <TextBlock Grid.Row="1" Grid.Column="2" Text="Sub Category:"   VerticalAlignment="Top" />
+                    <ListBox  Grid.Row="1" Grid.Column="4" Name="lbSubcategory"  VerticalAlignment="Stretch" Margin="5" />
+
+                    <TextBlock Grid.Row="2" Grid.Column="0" Text="Title:"/>
+                    <TextBox Grid.Row="2" Name="txtTitle" Grid.Column="1" Height="25" Text="{Binding ElementName=txtSearch,Path=Text,Mode=TwoWay}" Margin="5,5,5,0"/>
+                    <!--<acb:AutoCompleteComboBox Grid.Row="2" Name="cmbTitle" Grid.Column="1" ItemsSource="{Binding Titles,Mode=TwoWay}" Height="25" Margin="5,5,5,0"/>-->
+                    <!--<ComboBox Grid.Row="2" Grid.Column="1" Name="cmbTitle" Height="25" Margin="5,5,5,0"> </ComboBox>-->
+
+                    <TextBlock Grid.Row="2" Grid.Column="2" Text="{Binding ElementName=sliderDuration,Path=Value,StringFormat='Duration: ({0:#.#})'}"   />
+                    <TextBlock Grid.Row="2" Grid.Column="3" Text=" 0"  HorizontalAlignment="Left" />
+                    <TextBlock Grid.Row="2" Grid.Column="3" Text="{Binding ElementName=sliderDuration,Path=Maximum}"  HorizontalAlignment="Right" />
+                    <Slider Grid.Row="2" Grid.Column="3" Name="sliderDuration" Height="25" Margin="15,5,45,0" SmallChange="0.5" LargeChange="1" />
+
+                    <TextBlock Grid.Row="3" Grid.Column="0" Text="Director:" />
+                    <ComboBox Grid.Row="3" Grid.Column="1" Name="cmbDirector" Height="25" Margin="5,5,5,0" ItemsSource="{Binding Directors,Mode=TwoWay}"/>
+
+                    <TextBlock Grid.Row="3" Grid.Column="2" Text="MainClass:" />
+                    <ComboBox Grid.Row="3" Grid.Column="3" Name="cmbMainClass" Height="25" Margin="5,5,5,0" ItemsSource="{Binding MainClasses,Mode=TwoWay}"/>
+
+                    <TextBlock Grid.Row="4" Grid.Column="0" Text="Language:" />
+                    <ComboBox Grid.Row="4" Grid.Column="1" Name="cmbLanguage" Height="25" Margin="5,5,5,0" ItemsSource="{Binding Languages,Mode=TwoWay}"/>
+
+                    <TextBlock Grid.Row="4" Grid.Column="2" Text="Year:" />
+                    <ComboBox Grid.Row="4" Grid.Column="3" Name="cmbYear" Height="25" Margin="5,5,5,0" ItemsSource="{Binding Years,Mode=TwoWay}"/>
+
+
+                    <TextBlock Grid.Row="5" Grid.Column="0" Text="Format:"   />
+                    <TextBlock Grid.Row="5" Grid.Column="2" Text="Cast &amp; Crew:" Visibility="Collapsed" />
+                    <!--<ComboBox Grid.Row="5" Grid.Column="3" Name="cmbCastCrew" Height="25" Margin="5,5,5,0"  ItemsSource="{Binding CastCrews,Mode=TwoWay}"></ComboBox>-->
+
+                    <StackPanel Orientation="Horizontal" Grid.Row="5" Grid.Column="1" VerticalAlignment="Center">
+                        <RadioButton GroupName="rbBlackWhiteColor" Content="Both " Name="rbBoth" IsChecked="True"/>
+                        <RadioButton GroupName="rbBlackWhiteColor" Content="Color " Name="rbColor" />
+                        <RadioButton GroupName="rbBlackWhiteColor" Content="Black &amp; White "  Name="rbBW"/>
+                    </StackPanel>
+
+                    <TextBlock Grid.Row="6" Grid.Column="0" Text="Keyword:" Visibility="Collapsed" />
+                    <TextBox  Grid.Row="6" Grid.Column="1" Grid.ColumnSpan="3" Margin="5,5,5,0" Visibility="Collapsed"/>
+
+                    <StackPanel Orientation="Horizontal" Grid.ColumnSpan="5" Grid.Row="7" HorizontalAlignment="Center" VerticalAlignment="Center">
+                        <Button Content="Search" Name="btnAdvSearch" Grid.Column="1" Grid.Row="7" Height="33" Width="120" HorizontalAlignment="Center" VerticalAlignment="Center" Click="btnAdvSearch_Click"/>
+                        <Button Content="Close" Name="btnHideAdvSearch" Grid.Column="3" Grid.Row="7" Height="33" Width="120" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="100,0,0,0" Click="btnHideAdvSearch_Click"/>
+                    </StackPanel>
+                </Grid>
+            </StackPanel>
+        </Border>
+
+    </Grid>
+</Window>
