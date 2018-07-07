@@ -1,6 +1,7 @@
 ﻿<Window x:Class="MNDataSearch.DataWindow"  Icon="Images/logo.png"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" Title="DataWindow"  WindowState="Maximized" >
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" Title="DataWindow"  WindowState="Maximized" 
+        xmlns:helper="clr-namespace:MNDataSearch.Helper">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="100"/> 
@@ -35,7 +36,8 @@
 
             <StackPanel Grid.Column="2" Orientation="Horizontal" HorizontalAlignment="Left" VerticalAlignment="Top">
                 <TextBlock Text="Search For Title :" VerticalAlignment="Center" Margin="10"/>
-                <TextBox Name="txtSearch" FontSize="16" Foreground="Gray"  Width="500" Padding="5" Margin="3,3,10,3" TextChanged="txtSearch_TextChanged" />
+                <TextBox Name="txtSearch" Style="{DynamicResource SearchBoxStyle}"
+                         FontSize="16" Foreground="Gray"  Width="500" Padding="5" Margin="3,3,10,3" TextChanged="txtSearch_TextChanged" />
                 <Button Name="btnAdvanceSearch" Height="33" Width="150" Content="Search" Foreground="Gray" FontSize="14"  HorizontalAlignment="Center" Click="btnAdvSearch_Click"/>
                 <Button Name="btnPrint" Height="33" Width="100" Content="Print" Foreground="Gray" FontSize="16" Margin="10,0,0,0"  HorizontalAlignment="Center"  Click="btnPrint_Click"/>
                 <Button Name="btnBack" Height="33" Width="100" Content="Back" Foreground="Gray" FontSize="14" Margin="10,0,0,0"  HorizontalAlignment="Center" Click="btnBack_Click" />
@@ -43,8 +45,9 @@
 
             <GridSplitter Grid.Column="1" Grid.RowSpan="10" Width="2" Margin="-5,0,-5,0" VerticalAlignment="Stretch"/>
 
-            <!--<StackPanel Grid.Row="1" Grid.Column="2" Margin="5,0,5,0"   >-->
-            <DataGrid  Grid.Row="1" Grid.Column="2" Margin="5,0,5,0" Name="dgResult" SelectionMode="Extended"  SelectionUnit="FullRow" AutoGenerateColumns="False" MouseDoubleClick="dgResult_MouseDoubleClick" >
+            <StackPanel Grid.Row="1" Grid.Column="2" Margin="5,0,5,0"  Name="spDgContainer" VerticalAlignment="Top" >
+                <DataGrid Name="dgResult" helper:SearchOperations.SearchTerm="{Binding ElementName=txtSearch, Path=Text}" 
+                          SelectionMode="Extended" Height="520"  SelectionUnit="FullRow" VerticalAlignment="Top"  AutoGenerateColumns="False" MouseDoubleClick="dgResult_MouseDoubleClick" >
                 <DataGrid.CellStyle>
                     <Style TargetType="DataGridCell">
                         <Setter Property="TextBlock.TextAlignment" Value="Center"/>
@@ -59,19 +62,19 @@
                         </DataGridTemplateColumn.CellTemplate>
                     </DataGridTemplateColumn>
 
-                    <DataGridTextColumn  MinWidth="150" MaxWidth="80" Header="UniqueNo" IsReadOnly="True" Binding="{Binding UniqueNo}"/> 
-                    <DataGridTextColumn MinWidth="150" MaxWidth="200" Header="Title" IsReadOnly="True" Binding="{Binding Title}"/>
-                    <DataGridTextColumn MinWidth="100" MaxWidth="150" Header="Category" IsReadOnly="True" Binding="{Binding Category}"/>
-                    <DataGridTextColumn MinWidth="100" MaxWidth="150" Header="Sub Category" IsReadOnly="True" Binding="{Binding SubCategory}"/>
-                    <DataGridTextColumn MinWidth="080" MaxWidth="100" Header="Director" IsReadOnly="True" Binding="{Binding Director}"/>
+                    <DataGridTextColumn MinWidth="150" MaxWidth="80" Header="UniqueNo" IsReadOnly="True" Binding="{Binding UniqueNo}"/> 
+                    <DataGridTextColumn CellStyle="{StaticResource TitleCell}" MinWidth="150" MaxWidth="200" Header="Title" IsReadOnly="True" Binding="{Binding Title}"/>
+                    <DataGridTextColumn CellStyle="{StaticResource CategoryCell}" MinWidth="100" MaxWidth="150" Header="Category" IsReadOnly="True" Binding="{Binding Category}"/>
+                    <DataGridTextColumn CellStyle="{StaticResource SubCategoryCell}" MinWidth="100" MaxWidth="150" Header="Sub Category" IsReadOnly="True" Binding="{Binding SubCategory}"/>
+                    <DataGridTextColumn CellStyle="{StaticResource DirectorCell}" MinWidth="080" MaxWidth="100" Header="Director" IsReadOnly="True" Binding="{Binding Director}"/>
                     <!--<DataGridTextColumn MinWidth="080" MaxWidth="100" Header="Producer" IsReadOnly="True" Binding="{Binding Producer}"/>-->
-                    <DataGridTextColumn MinWidth="050" MaxWidth="100" Header="Language" IsReadOnly="True" Binding="{Binding Language}"/>
-                    <DataGridTextColumn MinWidth="050" MaxWidth="100" Header="Year" IsReadOnly="True" Binding="{Binding Year}"/>
-                    <DataGridTextColumn MinWidth="050" MaxWidth="100" Header="Duration" IsReadOnly="True" Binding="{Binding Duration}"/>
-                    <DataGridTextColumn MinWidth="050" MaxWidth="100" Header="B&amp;W" IsReadOnly="True" Binding="{Binding bW}"/> 
+                    <DataGridTextColumn CellStyle="{StaticResource LanguageCell}" MinWidth="050" MaxWidth="100" Header="Language" IsReadOnly="True" Binding="{Binding Language}"/>
+                    <DataGridTextColumn CellStyle="{StaticResource YearCell}" MinWidth="050" MaxWidth="100" Header="Year" IsReadOnly="True" Binding="{Binding Year}"/>
+                    <DataGridTextColumn CellStyle="{StaticResource DurationCell}" MinWidth="050" MaxWidth="100" Header="Duration" IsReadOnly="True" Binding="{Binding Duration}"/>
+                    <DataGridTextColumn CellStyle="{StaticResource BWCell}" MinWidth="050" MaxWidth="100" Header="B&amp;W" IsReadOnly="True" Binding="{Binding bW}"/> 
                 </DataGrid.Columns>
             </DataGrid>
-            <!--</StackPanel>-->
+            </StackPanel>
 
             <Border Grid.Column="0" Grid.RowSpan="2" CornerRadius="6" VerticalAlignment="Stretch"  HorizontalAlignment="Stretch" 
                 BorderBrush="Gray" Background="LightGray" BorderThickness="1" >
@@ -87,8 +90,10 @@
                             <RowDefinition Height="35"/>
                             <RowDefinition Height="80"/>
                             <RowDefinition Height="80"/>
+                            <RowDefinition Height="80"/>
                             <RowDefinition Height="30"/>
                             <RowDefinition Height="30"/>
+                            <RowDefinition Height="0"/>
                             <RowDefinition Height="30"/>
                             <RowDefinition Height="30"/>
                             <RowDefinition Height="30"/>
@@ -107,40 +112,43 @@
 
                         <TextBlock Grid.Row="1" Text="Category:"  VerticalAlignment="Top" />
                         <ListBox  Grid.Row="1" Grid.Column="1"  Name="lbCategory"  VerticalAlignment="Stretch" Margin="5" SelectionChanged="lbCategory_SelectionChanged" />
+ 
+                        <TextBlock Grid.Row="2" Text="MainClass:"  VerticalAlignment="Top" />
+                        <ListBox  Grid.Row="2" Grid.Column="1"  Name="lbMainClass"  VerticalAlignment="Stretch" Margin="5" SelectionChanged="lbMainClass_SelectionChanged" />
 
-                        <TextBlock Grid.Row="2" Grid.Column="0" Text="Sub Category:"   VerticalAlignment="Top" />
-                        <ListBox  Grid.Row="2" Grid.Column="1" Name="lbSubcategory"  VerticalAlignment="Stretch" Margin="5" SelectionChanged="lbSubcategory_SelectionChanged"/>
+                        <TextBlock Grid.Row="3" Grid.Column="0" Text="Sub Category:"   VerticalAlignment="Top" />
+                        <ListBox   Grid.Row="3" Grid.Column="1" Name="lbSubcategory"  VerticalAlignment="Stretch" Margin="5" SelectionChanged="lbSubcategory_SelectionChanged"/>
 
-                        <!--<TextBlock Grid.Row="3" Grid.Column="0" Text="Duration"   />-->
-                        <TextBlock Grid.Row="3" Grid.Column="0" Text="{Binding ElementName=sliderDuration,Path=Value,StringFormat='Duration: ({0:#.#})'}"   />
-                        <TextBlock Grid.Row="3" Grid.Column="1" Text=" 0"  HorizontalAlignment="Left" />
-                        <TextBlock Grid.Row="3" Grid.Column="1" Text="{Binding ElementName=sliderDuration,Path=Maximum,StringFormat=' {0:#}' }"  HorizontalAlignment="Right" />
-                        <Slider Grid.Row="3" Grid.Column="1" Name="sliderDuration" Height="25" Margin="15,5,45,0" SmallChange="0.5" ValueChanged="sliderDuration_ValueChanged" LargeChange="1"  ToolTip="{Binding ElementName=sliderDuration,Path=Value,StringFormat=' {0:#.#}'}" />
-                        <!--<ComboBox Grid.Row="3" Grid.Column="1" Name="cmbDuration" Height="25" Margin="5,5,5,0"></ComboBox>-->
+                        <!--<TextBlock Grid.Row="4" Grid.Column="0" Text="Duration"   />-->
+                        <TextBlock Grid.Row="4" Grid.Column="0" Text="{Binding ElementName=sliderDuration,Path=Value,StringFormat='Duration: ({0:#.#})'}"   />
+                        <TextBlock Grid.Row="4" Grid.Column="1" Text=" 0"  HorizontalAlignment="Left" />
+                        <TextBlock Grid.Row="4" Grid.Column="1" Text="{Binding ElementName=sliderDuration,Path=Maximum,StringFormat=' {0:#}' }"  HorizontalAlignment="Right" />
+                        <Slider    Grid.Row="4" Grid.Column="1" Name="sliderDuration" Height="25" Margin="15,5,45,0" SmallChange="0.5" ValueChanged="sliderDuration_ValueChanged" LargeChange="1"  ToolTip="{Binding ElementName=sliderDuration,Path=Value,StringFormat=' {0:#.#}'}" />
+                        <!--<ComboBox Grid.Row="4" Grid.Column="1" Name="cmbDuration" Height="25" Margin="5,5,5,0"></ComboBox>-->
 
-                        <TextBlock Grid.Row="4" Grid.Column="0" Text="Director:" />
-                        <ComboBox Grid.Row="4" Grid.Column="1" Name="cmbDirector" Height="25" Margin="5,5,5,0" ItemsSource="{Binding Directors,Mode=TwoWay}" SelectionChanged="cmbDirector_SelectionChanged"/>
+                        <TextBlock Grid.Row="5" Grid.Column="0" Text="Director:" />
+                        <ComboBox  Grid.Row="5" Grid.Column="1" Name="cmbDirector" Height="25" Margin="5,5,5,0" ItemsSource="{Binding Directors,Mode=TwoWay}" SelectionChanged="cmbDirector_SelectionChanged"/>
 
-                        <TextBlock Grid.Row="5" Grid.Column="0" Text="MainClass:" />
-                        <ComboBox Grid.Row="5" Grid.Column="1" Name="cmbMainClass" Height="25" Margin="5,5,5,0" ItemsSource="{Binding MainClasses,Mode=TwoWay}" SelectionChanged="cmbDirector_SelectionChanged"/>
+                        <TextBlock Grid.Row="7" Grid.Column="0" Text="Language:" />
+                        <ComboBox  Grid.Row="7" Grid.Column="1" Name="cmbLanguage" Height="25" Margin="5,5,5,0" ItemsSource="{Binding Languages,Mode=TwoWay}" SelectionChanged="cmbDirector_SelectionChanged"/>
 
-                        <TextBlock Grid.Row="6" Grid.Column="0" Text="Language:" />
-                        <ComboBox Grid.Row="6" Grid.Column="1" Name="cmbLanguage" Height="25" Margin="5,5,5,0" ItemsSource="{Binding Languages,Mode=TwoWay}" SelectionChanged="cmbDirector_SelectionChanged"/>
+                        <TextBlock Grid.Row="8" Grid.Column="0" Text="Year:" />
+                        <ComboBox  Grid.Row="8" Grid.Column="1" Name="cmbYear" Height="25" Margin="5,5,5,0" ItemsSource="{Binding Years,Mode=TwoWay}" SelectionChanged="cmbDirector_SelectionChanged"/>
 
-                        <TextBlock Grid.Row="7" Grid.Column="0" Text="Year:" />
-                        <ComboBox Grid.Row="7" Grid.Column="1" Name="cmbYear" Height="25" Margin="5,5,5,0" ItemsSource="{Binding Years,Mode=TwoWay}" SelectionChanged="cmbDirector_SelectionChanged"/>
-
-                        <TextBlock Grid.Row="8" Grid.Column="0" Text="Format:"   />
-                        <StackPanel Orientation="Horizontal" Grid.Row="8" Grid.Column="1" VerticalAlignment="Center">
+                        <TextBlock Grid.Row="9" Grid.Column="0" Text="Format:"   />
+                        <StackPanel Orientation="Horizontal" Grid.Row="9" Grid.Column="1" VerticalAlignment="Center">
                             <RadioButton GroupName="rbBlackWhiteColor" Content="Both " Name="rbBoth" IsChecked="True" Checked="rbBoth_Checked"/>
                             <RadioButton GroupName="rbBlackWhiteColor" Content="Color " Name="rbColor" Checked="rbBoth_Checked"/>
                             <RadioButton GroupName="rbBlackWhiteColor" Content="Black &amp; White "  Name="rbBW" Checked="rbBoth_Checked"/>
                         </StackPanel>
+ 
+                        <!--<TextBlock Grid.Row="10" Grid.Column="0" Text="Cast &amp; Crew:" />
+                        <ComboBox Grid.Row="10" Grid.Column="1" Name="cmbCastCrew" Height="25" Margin="5,5,5,0" Width="240" ></ComboBox>-->
 
-                        <!--<TextBlock Grid.Row="9" Grid.Column="0" Text="Cast &amp; Crew:" />
-                        <ComboBox Grid.Row="9" Grid.Column="1" Name="cmbCastCrew" Height="25" Margin="5,5,5,0" Width="240" ></ComboBox>-->
+                        <TextBlock Grid.Row="10" Grid.Column="0" Text="Keyword:" />
+                        <TextBox Grid.Row="10" Grid.Column="1" Name="txtKeyword" Height="25" Margin="5,5,5,0" Text="{Binding Keyword}" />
 
-                        <Button Content="Search" Name="btnAdvSearch" Grid.Column="1" Grid.Row="9" Height="25" Width="120" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="5,5,5,0" Click="btnAdvSearch_Click"/>
+                        <Button Content="Search" Name="btnAdvSearch" Grid.Column="1" Grid.Row="11" Height="25" Width="120" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="5,5,5,0" Click="btnAdvSearch_Click"/>
                     </Grid>
                 </StackPanel>
             </Border>

@@ -17,7 +17,8 @@ namespace MNDataSearch.Helper
         public static string ConnectionString = @"Provider=Microsoft.Jet.OLEDB.4.0;Data Source=" + AccessDatabaseLocation + ";Persist Security Info=True";
                                                  //Provider=Microsoft.Jet.OLEDB.4.0;Data Source=C:\Users\Khushi\Desktop\RajivTomar\MNDataSearch\MNDataSearch\App_Data\SearchCatlouge.mdb;Persist Security Info=True
         public static List<Catlouge> Data = new List<Catlouge>();
-        public static List<Category> Categories = new List<Category>();
+        public static List<string> Categories = new List<string>();
+        public static List<MainClass> MainClass = new List<MainClass>();
 
         public static void LoadSettingsAsync()
         {
@@ -77,6 +78,7 @@ namespace MNDataSearch.Helper
         {
             return File.Exists(AccessDatabaseLocation);
         }
+
         public static bool IsFolderExists()
         {
             return Directory.Exists(ImagesFolderPath);
@@ -86,8 +88,8 @@ namespace MNDataSearch.Helper
             LoadSettingsAsync();
 
             Data = new List<Catlouge>();
-            Categories = new List<Category>() { new Category() { Name = "All", SubCategory = new List<string>() { "All" } } };
-
+            Categories = new List<string>() { "All" };
+            MainClass = new List<MainClass>() { new MainClass() { Name = "All", SubCategory = new List<string>() { "All" } } };
             try
             {
                 using (var cn = new OleDbConnection(ConnectionString))
@@ -112,35 +114,32 @@ namespace MNDataSearch.Helper
                         ct.bW = Convert.ToString(dr["B&W"]).Trim();
                         ct.Director = Convert.ToString(dr["DIRECTOR"]).Trim();
                         ct.Producer = Convert.ToString(dr["Producer"]).Trim();
-                        try
-                        {
-                            ct.MainClass = Convert.ToString(dr["MainClass"]).Trim();
-                        }
-                        catch (Exception)
-                        {
-                        }
+                        ct.MainClass = Convert.ToString(dr["MainClass"]).Trim();
                         ct.CastCrew = Convert.ToString(dr["Cast & Crew"]).Trim();
 
-                        if (!Categories[0].SubCategory.Contains(ct.SubCategory))
-                            Categories[0].SubCategory.Add(ct.SubCategory);
+                        if (!Categories.Contains(ct.Category))
+                            Categories.Add(ct.Category);
+
+                        if (!MainClass[0].SubCategory.Contains(ct.SubCategory))
+                            MainClass[0].SubCategory.Add(ct.SubCategory);
 
                         if (!File.Exists(ct.ImagePath))
                         {
                             ct.ImagePath = null;
                         }
 
-                        if (!Categories.Select(v => v.Name).Contains(ct.Category))
+                        if (!MainClass.Select(v => v.Name).Contains(ct.Category))
                         {
-                            Categories.Add(new Category
+                            MainClass.Add(new MainClass
                             {
-                                ID = Categories.Count + 1,
+                                ID = MainClass.Count + 1,
                                 Name = ct.Category,
                                 SubCategory = new List<string>() { "All", ct.SubCategory }
                             });
                         }
                         else
                         {
-                            Category catTemp = Categories.Where(v => v.Name == ct.Category).FirstOrDefault();
+                            MainClass catTemp = MainClass.Where(v => v.Name == ct.Category).FirstOrDefault();
                             if (!catTemp.SubCategory.Contains(ct.SubCategory))
                             {
                                 catTemp.SubCategory.Add(ct.SubCategory);

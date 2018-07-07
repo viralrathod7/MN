@@ -65,9 +65,22 @@
     <ApplicationIcon>MNDataSearchIcon.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="CC_Library, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>DLL\CC_Library.dll</HintPath>
+    </Reference>
+    <Reference Include="FJ.Core, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>DLL\FJ.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="silverPDF, Version=1.2.1269.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>DLL\silverPDF.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Windows" />
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Core" />
@@ -86,12 +99,17 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Helper\SearchOperations.cs" />
+    <Compile Include="Helper\SearchTermConverter.cs" />
     <Compile Include="ViewModels\MainWindowViewModel.cs" />
     <Compile Include="View\SelectColumns.xaml.cs">
       <DependentUpon>SelectColumns.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\CatalougeDetail.xaml.cs">
       <DependentUpon>CatalougeDetail.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Window1.xaml.cs">
+      <DependentUpon>Window1.xaml</DependentUpon>
     </Compile>
     <Page Include="DataWindow.xaml">
       <SubType>Designer</SubType>
@@ -122,10 +140,14 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="View\Window1.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Models\Catalouge.cs" />
-    <Compile Include="Models\Category.cs" />
+    <Compile Include="Models\MainClass.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -153,6 +175,9 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="DLL\CC_Library.dll" />
+    <Content Include="DLL\FJ.Core.dll" />
+    <Content Include="DLL\silverPDF.dll" />
     <Content Include="Images\MainpageLogo.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

@@ -2,8 +2,267 @@
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:local="clr-namespace:MNDataSearch"
+             xmlns:helper="clr-namespace:MNDataSearch.Helper"
              StartupUri="MainWindow.xaml">
     <Application.Resources>
-         
+
+        <helper:SearchTermConverter x:Key="SearchTermConverter" />
+
+        <Style x:Key="CellStyleBase" TargetType="DataGridCell">
+            <!--<Setter Property="Margin" Value="4" />-->
+        </Style>
+
+        <Style x:Key="TitleCell" TargetType="DataGridCell" BasedOn="{StaticResource CellStyleBase}">
+            <Setter Property="helper:SearchOperations.IsMatch">
+                <Setter.Value>
+                    <MultiBinding Converter="{StaticResource SearchTermConverter}">
+                        <Binding Path="Title" />
+                        <Binding RelativeSource="{RelativeSource Self}" Path="(helper:SearchOperations.SearchTerm)" />
+                    </MultiBinding>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <Trigger Property="helper:SearchOperations.IsMatch" Value="True">
+                    <Setter Property="Background">
+                        <Setter.Value>
+                            <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                                <GradientStop Color="White" Offset="0"/>
+                                <GradientStop Color="#ebec62" Offset="1"/>
+                            </LinearGradientBrush>
+                        </Setter.Value>
+                    </Setter>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+        <Style x:Key="CategoryCell" TargetType="DataGridCell" BasedOn="{StaticResource CellStyleBase}">
+            <Setter Property="helper:SearchOperations.IsMatch">
+                <Setter.Value>
+                    <MultiBinding Converter="{StaticResource SearchTermConverter}">
+                        <Binding Path="Category" />
+                        <Binding RelativeSource="{RelativeSource Self}" Path="(helper:SearchOperations.SearchTerm)" />
+                    </MultiBinding>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <Trigger Property="helper:SearchOperations.IsMatch" Value="True">
+                    <Setter Property="Background">
+                        <Setter.Value>
+                            <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                                <GradientStop Color="White" Offset="0"/>
+                                <GradientStop Color="#ebec62" Offset="1"/>
+                            </LinearGradientBrush>
+                        </Setter.Value>
+                    </Setter>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+        <Style x:Key="SubCategoryCell" TargetType="DataGridCell" BasedOn="{StaticResource CellStyleBase}">
+            <Setter Property="helper:SearchOperations.IsMatch">
+                <Setter.Value>
+                    <MultiBinding Converter="{StaticResource SearchTermConverter}">
+                        <Binding Path="SubCategory" />
+                        <Binding RelativeSource="{RelativeSource Self}" Path="(helper:SearchOperations.SearchTerm)" />
+                    </MultiBinding>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <Trigger Property="helper:SearchOperations.IsMatch" Value="True">
+                    <Setter Property="Background">
+                        <Setter.Value>
+                            <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                                <GradientStop Color="White" Offset="0"/>
+                                <GradientStop Color="#ebec62" Offset="1"/>
+                            </LinearGradientBrush>
+                        </Setter.Value>
+                    </Setter>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+        <Style x:Key="DirectorCell" TargetType="DataGridCell" BasedOn="{StaticResource CellStyleBase}">
+            <Setter Property="helper:SearchOperations.IsMatch">
+                <Setter.Value>
+                    <MultiBinding Converter="{StaticResource SearchTermConverter}">
+                        <Binding Path="Director" />
+                        <Binding RelativeSource="{RelativeSource Self}" Path="(helper:SearchOperations.SearchTerm)" />
+                    </MultiBinding>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <Trigger Property="helper:SearchOperations.IsMatch" Value="True">
+                    <Setter Property="Background">
+                        <Setter.Value>
+                            <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                                <GradientStop Color="White" Offset="0"/>
+                                <GradientStop Color="#ebec62" Offset="1"/>
+                            </LinearGradientBrush>
+                        </Setter.Value>
+                    </Setter>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+        <Style x:Key="LanguageCell" TargetType="DataGridCell" BasedOn="{StaticResource CellStyleBase}">
+            <Setter Property="helper:SearchOperations.IsMatch">
+                <Setter.Value>
+                    <MultiBinding Converter="{StaticResource SearchTermConverter}">
+                        <Binding Path="Language" />
+                        <Binding RelativeSource="{RelativeSource Self}" Path="(helper:SearchOperations.SearchTerm)" />
+                    </MultiBinding>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <Trigger Property="helper:SearchOperations.IsMatch" Value="True">
+                    <Setter Property="Background">
+                        <Setter.Value>
+                            <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                                <GradientStop Color="White" Offset="0"/>
+                                <GradientStop Color="#ebec62" Offset="1"/>
+                            </LinearGradientBrush>
+                        </Setter.Value>
+                    </Setter>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+        <Style x:Key="YearCell" TargetType="DataGridCell" BasedOn="{StaticResource CellStyleBase}">
+            <Setter Property="helper:SearchOperations.IsMatch">
+                <Setter.Value>
+                    <MultiBinding Converter="{StaticResource SearchTermConverter}">
+                        <Binding Path="Year" />
+                        <Binding RelativeSource="{RelativeSource Self}" Path="(helper:SearchOperations.SearchTerm)" />
+                    </MultiBinding>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <Trigger Property="helper:SearchOperations.IsMatch" Value="True">
+                    <Setter Property="Background">
+                        <Setter.Value>
+                            <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                                <GradientStop Color="White" Offset="0"/>
+                                <GradientStop Color="#ebec62" Offset="1"/>
+                            </LinearGradientBrush>
+                        </Setter.Value>
+                    </Setter>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+        <Style x:Key="DurationCell" TargetType="DataGridCell" BasedOn="{StaticResource CellStyleBase}">
+            <Setter Property="helper:SearchOperations.IsMatch">
+                <Setter.Value>
+                    <MultiBinding Converter="{StaticResource SearchTermConverter}">
+                        <Binding Path="Duration" />
+                        <Binding RelativeSource="{RelativeSource Self}" Path="(helper:SearchOperations.SearchTerm)" />
+                    </MultiBinding>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <Trigger Property="helper:SearchOperations.IsMatch" Value="True">
+                    <Setter Property="Background">
+                        <Setter.Value>
+                            <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                                <GradientStop Color="White" Offset="0"/>
+                                <GradientStop Color="#ebec62" Offset="1"/>
+                            </LinearGradientBrush>
+                        </Setter.Value>
+                    </Setter>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+        <Style x:Key="BWCell" TargetType="DataGridCell" BasedOn="{StaticResource CellStyleBase}">
+            <Setter Property="helper:SearchOperations.IsMatch">
+                <Setter.Value>
+                    <MultiBinding Converter="{StaticResource SearchTermConverter}">
+                        <Binding Path="BW" />
+                        <Binding RelativeSource="{RelativeSource Self}" Path="(helper:SearchOperations.SearchTerm)" />
+                    </MultiBinding>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <Trigger Property="helper:SearchOperations.IsMatch" Value="True">
+                    <Setter Property="Background">
+                        <Setter.Value>
+                            <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                                <GradientStop Color="White" Offset="0"/>
+                                <GradientStop Color="#ebec62" Offset="1"/>
+                            </LinearGradientBrush>
+                        </Setter.Value>
+                    </Setter>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+        <!--<Style x:Key="LastNameCell" TargetType="{x:Type DataGridCell}" BasedOn="{StaticResource CellStyleBase}">
+            <Setter Property="helper:SearchOperations.IsMatch">
+                <Setter.Value>
+                    <MultiBinding Converter="{StaticResource SearchTermConverter}">
+                        <Binding Path="LastName" />
+                        <Binding RelativeSource="{RelativeSource Self}" Path="(helper:SearchOperations.SearchTerm)" />
+                    </MultiBinding>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <Trigger Property="helper:SearchOperations.IsMatch" Value="True">
+                    <Setter Property="Background">
+                        <Setter.Value>
+                            <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                                <GradientStop Color="White" Offset="0"/>
+                                <GradientStop Color="#FFFFDD83" Offset="1"/>
+                            </LinearGradientBrush>
+                        </Setter.Value>
+                    </Setter>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+        <Style x:Key="PhoneCell" TargetType="{x:Type DataGridCell}" BasedOn="{StaticResource CellStyleBase}">
+            <Setter Property="helper:SearchOperations.IsMatch">
+                <Setter.Value>
+                    <MultiBinding Converter="{StaticResource SearchTermConverter}">
+                        <Binding Path="Phone" />
+                        <Binding RelativeSource="{RelativeSource Self}" Path="(helper:SearchOperations.SearchTerm)" />
+                    </MultiBinding>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <Trigger Property="helper:SearchOperations.IsMatch" Value="True">
+                    <Setter Property="Background">
+                        <Setter.Value>
+                            <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                                <GradientStop Color="White" Offset="0"/>
+                                <GradientStop Color="#FFFFA86C" Offset="1"/>
+                            </LinearGradientBrush>
+                        </Setter.Value>
+                    </Setter>
+                </Trigger>
+            </Style.Triggers>
+        </Style>-->
+
+
+        <Style x:Key="SearchBoxStyle" TargetType="TextBox">
+            <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="TextBox">
+                        <Border x:Name="Bd" SnapsToDevicePixels="true" Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}">
+                            <Grid>
+                                <TextBlock x:Name="Watermark" Margin="4,0,0,0" Visibility="Hidden" HorizontalAlignment="Left" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" Text="Search..." FontStyle="Italic" VerticalAlignment="Center" Foreground="Gray" FontSize="{TemplateBinding FontSize}" />
+                                <ScrollViewer x:Name="PART_ContentHost" VerticalAlignment="Center" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
+                            </Grid>
+                        </Border>
+
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsEnabled" Value="false">
+                                <Setter Property="Background" TargetName="Bd" Value="{DynamicResource {x:Static SystemColors.ControlBrushKey}}"/>
+                                <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.GrayTextBrushKey}}"/>
+                            </Trigger>
+                            <Trigger Property="Text" Value="">
+                                <Setter TargetName="Watermark" Property="Visibility" Value="Visible" />
+                            </Trigger>
+                            <Trigger Property="Text" Value="{x:Null}">
+                                <Setter TargetName="Watermark" Property="Visibility" Value="Visible" />
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
     </Application.Resources>
 </Application>

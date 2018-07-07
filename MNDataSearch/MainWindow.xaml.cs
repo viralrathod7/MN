@@ -37,12 +37,14 @@ namespace MNDataSearch
         {
             vm.PopulateData();
 
-            lbCategory.ItemsSource = Helper.GlobalClass.Categories.Select(v => v.Name);
 
+            lbCategory.ItemsSource = Helper.GlobalClass.Categories;
+            lbMainClass.ItemsSource = Helper.GlobalClass.MainClass.Select(v => v.Name);
+
+            lbMainClass.SelectedIndex = 0;
             lbCategory.SelectedIndex = 0;
             cmbDirector.SelectedIndex = 0;
             //Producer.SelectedIndex = 0;
-            cmbMainClass.SelectedIndex = 0;
             cmbLanguage.SelectedIndex = 0;
             cmbYear.SelectedIndex = 0;
             //cmbCastCrew.SelectedIndex = 0; 
@@ -55,12 +57,17 @@ namespace MNDataSearch
 
         private void lbCategory_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            PopulateSubCategories(lbCategory.SelectedValue.ToString());
+            //Nothing to do while category change
         }
 
-        private void PopulateSubCategories(string CategoryName)
+        private void lbMainClass_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            lbSubcategory.ItemsSource = Helper.GlobalClass.Categories.Where(v => v.Name == CategoryName).FirstOrDefault().SubCategory;
+            PopulateSubCategories(lbMainClass.SelectedValue.ToString());
+        }
+
+        private void PopulateSubCategories(string MainClassName)
+        {
+            lbSubcategory.ItemsSource = Helper.GlobalClass.MainClass.Where(v => v.Name == MainClassName).FirstOrDefault().SubCategory;
             lbSubcategory.SelectedIndex = 0;
         }
 
@@ -74,8 +81,8 @@ namespace MNDataSearch
         {
             string dTitle = (sender as Button) == btnSearch ? txtSearch.Text.Trim() : txtTitle.Text.Trim();
             DataWindow dwindow = new DataWindow(vm, dTitle, Convert.ToString(lbCategory.SelectedValue),
-                Convert.ToString(lbSubcategory.SelectedValue), Convert.ToString(cmbDirector.SelectedValue),
-                Convert.ToString(cmbMainClass.SelectedValue),
+                 Convert.ToString(lbMainClass.SelectedValue), Convert.ToString(lbSubcategory.SelectedValue),
+                 Convert.ToString(cmbDirector.SelectedValue), txtKeyword.Text.Trim(),
                 Convert.ToString(cmbLanguage.SelectedValue),
                 sliderDuration.Value, Convert.ToString(cmbYear.SelectedValue), rbBoth.IsChecked.Value, rbColor.IsChecked.Value, rbBW.IsChecked.Value);
             dwindow.ShowDialog();
