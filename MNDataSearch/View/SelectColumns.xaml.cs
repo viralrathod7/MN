@@ -1,9 +1,13 @@
-﻿using MNDataSearch.Models;
-using System.Collections;
+﻿using MNDataSearch.Helper;
+using MNDataSearch.Models;
+using System;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.Linq;
+using System.Printing;
 using System.Windows;
 using System.Windows.Controls;
-using System.Collections.ObjectModel;
+using System.Windows.Documents;
 
 namespace MNDataSearch.View
 {
@@ -12,7 +16,7 @@ namespace MNDataSearch.View
     /// </summary>
     public partial class SelectColumns : Window
     {
-        internal DataGrid dg;
+        internal DataGrid dgResult;
 
         public SelectColumns()
         {
@@ -22,25 +26,26 @@ namespace MNDataSearch.View
 
         private void SelectColumns_Loaded(object sender, RoutedEventArgs e)
         {
-            lbColumns.ItemsSource = SourceToPrint;
+            lbColumns.ItemsSource = dgResult.Columns;// SourceToPrint;
         }
-
-        public ObservableCollection<DataGridColumn> SourceToPrint { get; internal set; }
 
         private void btnClose_Click(object sender, RoutedEventArgs e)
         {
             DialogResult = false;
         }
-
-        private void btnPrint_Click(object sender, RoutedEventArgs e)
+         
+        private void CheckBox_Checked(object sender, RoutedEventArgs e)
         {
-            PrintDialog pd = new PrintDialog();
-            if (pd.ShowDialog() == true)
-            {
-                pd.PrintVisual(dg, "Catlouge Details");
-            }
-            DialogResult = true;
+            string columnName = System.Convert.ToString((sender as CheckBox).Content);
+            dgResult.Columns.Where(v => v.Header.ToString() == columnName).FirstOrDefault().Visibility =
+                (sender as CheckBox).IsChecked.Value ? Visibility.Visible : Visibility.Collapsed;
+        }
+
+        private void CheckBox_Unchecked(object sender, RoutedEventArgs e)
+        {
+            string columnName = System.Convert.ToString((sender as CheckBox).Content);
+            dgResult.Columns.Where(v => v.Header.ToString() == columnName).FirstOrDefault().Visibility =
+                (sender as CheckBox).IsChecked.Value ? Visibility.Visible : Visibility.Collapsed;
         }
     }
-
 }

@@ -37,10 +37,11 @@
             <StackPanel Grid.Column="2" Orientation="Horizontal" HorizontalAlignment="Left" VerticalAlignment="Top">
                 <TextBlock Text="Search For Title :" VerticalAlignment="Center" Margin="10"/>
                 <TextBox Name="txtSearch" Style="{DynamicResource SearchBoxStyle}"
-                         FontSize="16" Foreground="Gray"  Width="500" Padding="5" Margin="3,3,10,3" TextChanged="txtSearch_TextChanged" />
-                <Button Name="btnAdvanceSearch" Height="33" Width="150" Content="Search" Foreground="Gray" FontSize="14"  HorizontalAlignment="Center" Click="btnAdvSearch_Click"/>
-                <Button Name="btnPrint" Height="33" Width="100" Content="Print" Foreground="Gray" FontSize="16" Margin="10,0,0,0"  HorizontalAlignment="Center"  Click="btnPrint_Click"/>
-                <Button Name="btnBack" Height="33" Width="100" Content="Back" Foreground="Gray" FontSize="14" Margin="10,0,0,0"  HorizontalAlignment="Center" Click="btnBack_Click" />
+                         FontSize="16" Foreground="Gray"  Width="500" Padding="5" Margin="3,3,10,3" SpellCheck.IsEnabled="True" TextChanged="txtSearch_TextChanged" />
+                <Button Name="btnAdvanceSearch" Height="33" Width="80" Content="Search" Foreground="Gray" FontSize="14"  HorizontalAlignment="Center" Click="btnAdvSearch_Click"/>
+                <Button Name="btnPrint" Height="33" Width="80" Content="Print" Foreground="Gray" FontSize="14" Margin="10,0,0,0"  HorizontalAlignment="Center"  Click="btnPrint_Click"/>
+                <Button Name="btnColumns" Height="33" Width="80" Content="Columns" Foreground="Gray" FontSize="14" Margin="10,0,0,0"  HorizontalAlignment="Center"  Click="btnColumns_Click"/>
+                <Button Name="btnBack" Height="33" Width="80" Content="Back" Foreground="Gray" FontSize="14" Margin="10,0,0,0"  HorizontalAlignment="Center" Click="btnBack_Click" />
             </StackPanel>
 
             <GridSplitter Grid.Column="1" Grid.RowSpan="10" Width="2" Margin="-5,0,-5,0" VerticalAlignment="Stretch"/>
@@ -64,14 +65,14 @@
 
                     <DataGridTextColumn MinWidth="150" MaxWidth="80" Header="UniqueNo" IsReadOnly="True" Binding="{Binding UniqueNo}"/> 
                     <DataGridTextColumn CellStyle="{StaticResource TitleCell}" MinWidth="150" MaxWidth="200" Header="Title" IsReadOnly="True" Binding="{Binding Title}"/>
-                    <DataGridTextColumn CellStyle="{StaticResource CategoryCell}" MinWidth="100" MaxWidth="150" Header="Category" IsReadOnly="True" Binding="{Binding Category}"/>
-                    <DataGridTextColumn CellStyle="{StaticResource SubCategoryCell}" MinWidth="100" MaxWidth="150" Header="Sub Category" IsReadOnly="True" Binding="{Binding SubCategory}"/>
-                    <DataGridTextColumn CellStyle="{StaticResource DirectorCell}" MinWidth="080" MaxWidth="100" Header="Director" IsReadOnly="True" Binding="{Binding Director}"/>
+                    <DataGridTextColumn  MinWidth="100" MaxWidth="150" Header="Category" IsReadOnly="True" Binding="{Binding Category}"/>
+                    <DataGridTextColumn  MinWidth="100" MaxWidth="150" Header="Sub Category" IsReadOnly="True" Binding="{Binding SubCategory}"/>
+                    <DataGridTextColumn  MinWidth="080" MaxWidth="100" Header="Director" IsReadOnly="True" Binding="{Binding Director}"/>
                     <!--<DataGridTextColumn MinWidth="080" MaxWidth="100" Header="Producer" IsReadOnly="True" Binding="{Binding Producer}"/>-->
-                    <DataGridTextColumn CellStyle="{StaticResource LanguageCell}" MinWidth="050" MaxWidth="100" Header="Language" IsReadOnly="True" Binding="{Binding Language}"/>
-                    <DataGridTextColumn CellStyle="{StaticResource YearCell}" MinWidth="050" MaxWidth="100" Header="Year" IsReadOnly="True" Binding="{Binding Year}"/>
-                    <DataGridTextColumn CellStyle="{StaticResource DurationCell}" MinWidth="050" MaxWidth="100" Header="Duration" IsReadOnly="True" Binding="{Binding Duration}"/>
-                    <DataGridTextColumn CellStyle="{StaticResource BWCell}" MinWidth="050" MaxWidth="100" Header="B&amp;W" IsReadOnly="True" Binding="{Binding bW}"/> 
+                    <DataGridTextColumn  MinWidth="050" MaxWidth="100" Header="Language" IsReadOnly="True" Binding="{Binding Language}"/>
+                    <DataGridTextColumn  MinWidth="050" MaxWidth="100" Header="Year" IsReadOnly="True" Binding="{Binding Year}"/>
+                    <DataGridTextColumn  MinWidth="050" MaxWidth="100" Header="Duration" IsReadOnly="True" Binding="{Binding Duration}"/>
+                    <DataGridTextColumn  MinWidth="050" MaxWidth="100" Header="B&amp;W" IsReadOnly="True" Binding="{Binding bW}"/> 
                 </DataGrid.Columns>
             </DataGrid>
             </StackPanel>
@@ -146,7 +147,7 @@
                         <ComboBox Grid.Row="10" Grid.Column="1" Name="cmbCastCrew" Height="25" Margin="5,5,5,0" Width="240" ></ComboBox>-->
 
                         <TextBlock Grid.Row="10" Grid.Column="0" Text="Keyword:" />
-                        <TextBox Grid.Row="10" Grid.Column="1" Name="txtKeyword" Height="25" Margin="5,5,5,0" Text="{Binding Keyword}" />
+                        <TextBox Grid.Row="10" Grid.Column="1" Name="txtKeyword" Height="25" Margin="5,5,5,0" Text="{Binding Keyword}" TextChanged="txtKeyword_TextChanged" />
 
                         <Button Content="Search" Name="btnAdvSearch" Grid.Column="1" Grid.Row="11" Height="25" Width="120" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="5,5,5,0" Click="btnAdvSearch_Click"/>
                     </Grid>

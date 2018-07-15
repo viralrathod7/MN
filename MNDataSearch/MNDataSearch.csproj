@@ -65,21 +65,19 @@
     <ApplicationIcon>MNDataSearchIcon.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="CC_Library, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>DLL\CC_Library.dll</HintPath>
-    </Reference>
     <Reference Include="FJ.Core, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>DLL\FJ.Core.dll</HintPath>
     </Reference>
-    <Reference Include="silverPDF, Version=1.2.1269.0, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="PdfSharp-wpf, Version=1.50.4740.0, Culture=neutral, PublicKeyToken=f94615aa0424f9eb, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>DLL\silverPDF.dll</HintPath>
+      <HintPath>DLL\PdfSharp-wpf.dll</HintPath>
     </Reference>
+    <Reference Include="ReachFramework" />
     <Reference Include="System" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Printing" />
     <Reference Include="System.Windows" />
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
@@ -99,6 +97,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Helper\Export.cs" />
     <Compile Include="Helper\SearchOperations.cs" />
     <Compile Include="Helper\SearchTermConverter.cs" />
     <Compile Include="ViewModels\MainWindowViewModel.cs" />
@@ -127,7 +126,7 @@
       <DependentUpon>DataWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Helper\GlobalClass.cs" />
-    <Compile Include="Helper\Sample.cs" />
+    <Compile Include="Helper\PrintHelper.cs" />
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
@@ -175,12 +174,15 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="DLL\CC_Library.dll" />
     <Content Include="DLL\FJ.Core.dll" />
-    <Content Include="DLL\silverPDF.dll" />
+    <Content Include="DLL\PdfSharp-wpf.dll" />
+    <Content Include="DLL\PdfSharp.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Images\MainpageLogo.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Resource Include="Images\quit.png" />
     <Resource Include="MNDataSearchIcon.ico" />
   </ItemGroup>
   <ItemGroup>

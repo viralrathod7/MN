@@ -19,6 +19,8 @@ using PdfSharp.Pdf;
 using PdfSharp.Drawing;
 using System.Collections;
 using Microsoft.Win32;
+using System.Windows.Xps.Packaging;
+using System.IO.Packaging;
 
 namespace MNDataSearch.Helper
 {
@@ -34,93 +36,93 @@ namespace MNDataSearch.Helper
         /// <param name="uc">UIElement to pass</param>
         public static void SaveToJPG(UIElement uc, bool IsFull = false)
         {
-            DataGrid dg = new DataGrid();
-            double temp_ActualHeight = double.NaN;
-            double temp_ActualWidth = double.NaN;
-            Thickness temp_Margin = new Thickness(0, 0, 0, 0);
-            ScrollBarVisibility temp_ActualHorizontalScrollBarVisibility = ScrollBarVisibility.Auto;
+            //DataGrid dg = new DataGrid();
+            //double temp_ActualHeight = double.NaN;
+            //double temp_ActualWidth = double.NaN;
+            //Thickness temp_Margin = new Thickness(0, 0, 0, 0);
+            //ScrollBarVisibility temp_ActualHorizontalScrollBarVisibility = ScrollBarVisibility.Auto;
 
-            try
-            {
-                WriteableBitmap bitmap = new WriteableBitmap(uc, null);
+            //try
+            //{ 
+            //    WriteableBitmap bitmap = new WriteableBitmap(uc, null);
 
-                if (bitmap != null)
-                {
-                    SaveFileDialog saveDlg = new SaveFileDialog();
-                    saveDlg.Filter = "JPEG Files (*.jpeg)|*.jpeg";
-                    saveDlg.DefaultExt = ".jpeg";
+            //    if (bitmap != null)
+            //    {
+            //        SaveFileDialog saveDlg = new SaveFileDialog();
+            //        saveDlg.Filter = "JPEG Files (*.jpeg)|*.jpeg";
+            //        saveDlg.DefaultExt = ".jpeg";
 
-                    if ((bool)saveDlg.ShowDialog())
-                    {
-                        using (Stream fs = saveDlg.OpenFile())
-                        {
-                            MemoryStream stream;
-                            if (IsFull)
-                            {
-                                if (uc is DataGrid)
-                                {
-                                    dg = uc as DataGrid;
+            //        if ((bool)saveDlg.ShowDialog())
+            //        {
+            //            using (Stream fs = saveDlg.OpenFile())
+            //            {
+            //                MemoryStream stream;
+            //                if (IsFull)
+            //                {
+            //                    if (uc is DataGrid)
+            //                    {
+            //                        dg = uc as DataGrid;
 
-                                    //Backup Original Data
-                                    temp_ActualHeight = dg.Height.ToString() == double.NaN.ToString() ? double.NaN : dg.ActualHeight;
-                                    temp_ActualWidth = dg.Width.ToString() == double.NaN.ToString() ? double.NaN : dg.ActualWidth;
-                                    temp_Margin = dg.Margin;
-                                    temp_ActualHorizontalScrollBarVisibility = dg.HorizontalScrollBarVisibility;
+            //                        //Backup Original Data
+            //                        temp_ActualHeight = dg.Height.ToString() == double.NaN.ToString() ? double.NaN : dg.ActualHeight;
+            //                        temp_ActualWidth = dg.Width.ToString() == double.NaN.ToString() ? double.NaN : dg.ActualWidth;
+            //                        temp_Margin = dg.Margin;
+            //                        temp_ActualHorizontalScrollBarVisibility = dg.HorizontalScrollBarVisibility;
 
-                                    int RowCount = 0; //Number of Rows in a Datagrid
-                                    double Total_Width = 0; //Total Width of a Datagrid
-                                    foreach (object data in dg.ItemsSource) RowCount++;
-                                    foreach (DataGridColumn dgc in dg.Columns) Total_Width += dgc.ActualWidth;
+            //                        int RowCount = 0; //Number of Rows in a Datagrid
+            //                        double Total_Width = 0; //Total Width of a Datagrid
+            //                        foreach (object data in dg.ItemsSource) RowCount++;
+            //                        foreach (DataGridColumn dgc in dg.Columns) Total_Width += dgc.ActualWidth;
 
-                                    //Setting control for Proper GUI
-                                    dg.Margin = new Thickness(-100, temp_Margin.Top, -2000, -25 * RowCount);
-                                    dg.Width = Total_Width;
-                                    dg.Height = double.NaN;
-                                    dg.HorizontalScrollBarVisibility = ScrollBarVisibility.Hidden;
-                                    dg.VerticalScrollBarVisibility = ScrollBarVisibility.Hidden;
-                                    dg.UpdateLayout();
+            //                        //Setting control for Proper GUI
+            //                        dg.Margin = new Thickness(-100, temp_Margin.Top, -2000, -25 * RowCount);
+            //                        dg.Width = Total_Width;
+            //                        dg.Height = double.NaN;
+            //                        dg.HorizontalScrollBarVisibility = ScrollBarVisibility.Hidden;
+            //                        dg.VerticalScrollBarVisibility = ScrollBarVisibility.Hidden;
+            //                        dg.UpdateLayout();
 
-                                    stream = GetImageStream(new WriteableBitmap(dg, null));
-                                }
-                                else
-                                    stream = GetImageStream(bitmap);
-                            }
-                            else
-                            {
-                                stream = GetImageStream(bitmap);
-                            }
-                            //Get Bytes from memory stream and write into IO stream
-                            byte[] binaryData = new Byte[stream.Length];
-                            long bytesRead = stream.Read(binaryData, 0, (int)stream.Length);
-                            fs.Write(binaryData, 0, binaryData.Length);
-                        }
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                //System.Diagnostics.Debug.WriteLine("Note: Please make sure that Height and Width of the chart is set properly.");
-                //System.Diagnostics.Debug.WriteLine(ex.Message);
-            }
-            finally
-            {
-                if (uc is DataGrid)
-                {
-                    dg.Height = temp_ActualHeight;
-                    dg.Width = temp_ActualWidth;
-                    dg.HorizontalScrollBarVisibility = temp_ActualHorizontalScrollBarVisibility;
-                    dg.VerticalScrollBarVisibility = temp_ActualHorizontalScrollBarVisibility;
-                    dg.Margin = temp_Margin;
-                    dg.UpdateLayout();
-                }
-            }
+            //                        stream = GetImageStream(new WriteableBitmap(dg, null));
+            //                    }
+            //                    else
+            //                        stream = GetImageStream(bitmap);
+            //                }
+            //                else
+            //                {
+            //                    stream = GetImageStream(bitmap);
+            //                }
+            //                //Get Bytes from memory stream and write into IO stream
+            //                byte[] binaryData = new Byte[stream.Length];
+            //                long bytesRead = stream.Read(binaryData, 0, (int)stream.Length);
+            //                fs.Write(binaryData, 0, binaryData.Length);
+            //            }
+            //        }
+            //    }
+            //}
+            //catch (Exception ex)
+            //{
+            //    //System.Diagnostics.Debug.WriteLine("Note: Please make sure that Height and Width of the chart is set properly.");
+            //    //System.Diagnostics.Debug.WriteLine(ex.Message);
+            //}
+            //finally
+            //{
+            //    if (uc is DataGrid)
+            //    {
+            //        dg.Height = temp_ActualHeight;
+            //        dg.Width = temp_ActualWidth;
+            //        dg.HorizontalScrollBarVisibility = temp_ActualHorizontalScrollBarVisibility;
+            //        dg.VerticalScrollBarVisibility = temp_ActualHorizontalScrollBarVisibility;
+            //        dg.Margin = temp_Margin;
+            //        dg.UpdateLayout();
+            //    }
+            //}
         }
 
         /// <summary>
         /// Save Any UserControl as PDF
         /// </summary>
         /// <param name="uc">UIElement</param>
-        public static void SaveToPDF(UIElement uc, bool IsHeaderForPDF, bool IsFooterForPDF, string strHeader, double paramColumnHeaderHeight = 40, double paramRowHeight = 25)
+        public static void SaveToPDF(DataGrid dg, bool IsHeaderForPDF, bool IsFooterForPDF, string strHeader, double paramColumnHeaderHeight = 40, double paramRowHeight = 25)
         {
             try
             {
@@ -135,7 +137,6 @@ namespace MNDataSearch.Helper
                 {
                     PdfDocument document = new PdfDocument();
                     MemoryStream mstream;
-                    DataGrid dg = new DataGrid();
                     double temp_ActualHeight = double.NaN;
                     double temp_ActualWidth = double.NaN;
                     double temp_ColumnHeaderHeight = double.NaN;
@@ -145,125 +146,99 @@ namespace MNDataSearch.Helper
 
                     try
                     {
-                        if (uc is DataGrid)
+                        //dg.IsEnabled = false;
+
+                        foreach (object data in dg.ItemsSource) RowCount++;
+                        foreach (DataGridColumn dgc in dg.Columns) Total_Width += dgc.ActualWidth;
+                        int Rows_Per_Page = 40; // Total rows to show Per Page
+
+                        for (int cnt = 1; cnt <= Math.Ceiling((double)RowCount / Rows_Per_Page) + 1; cnt++)
                         {
-                            dg = uc as DataGrid;
-                            //dg.IsEnabled = false;
+                            int Remaining = RowCount - ((cnt - 1) * Rows_Per_Page);
+                            if (Remaining < 1) break;
 
-                            foreach (object data in dg.ItemsSource) RowCount++;
-                            foreach (DataGridColumn dgc in dg.Columns) Total_Width += dgc.ActualWidth;
-                            int Rows_Per_Page = 40; // Total rows to show Per Page
-
-                            for (int cnt = 1; cnt <= Math.Ceiling(RowCount / Rows_Per_Page) + 1; cnt++)
-                            {
-                                int Remaining = RowCount - ((cnt - 1) * Rows_Per_Page);
-                                if (Remaining < 1) break;
-
-                                PdfPage inner_page = document.AddPage();
-                                XGraphics inner_gfx1 = XGraphics.FromPdfPage(inner_page);
-
-                                if (cnt == 1)
-                                {
-                                    //Backup Original Data
-                                    temp_ActualHeight = dg.Height.ToString() == double.NaN.ToString() ? double.NaN : dg.ActualHeight;
-                                    temp_ActualWidth = dg.Width.ToString() == double.NaN.ToString() ? double.NaN : dg.ActualWidth;
-                                    temp_ColumnHeaderHeight = dg.ColumnHeaderHeight;
-                                    temp_RowHeight = dg.RowHeight;
-                                    temp_Margin = dg.Margin;
-                                    temp_ActualHorizontalScrollBarVisibility = dg.HorizontalScrollBarVisibility;
-
-                                    //Setting control for Proper GUI
-                                    dg.Margin = new Thickness(-100, temp_Margin.Top, -2000, temp_Margin.Bottom);
-                                    dg.Width = Total_Width;
-                                    inner_page.Width = (Total_Width > inner_page.Width.Presentation) ? new XUnit(Total_Width + 25, XGraphicsUnit.Presentation) : inner_page.Width;
-                                    dg.Height = inner_page.Height + 170;
-                                    dg.HorizontalScrollBarVisibility = ScrollBarVisibility.Hidden;
-                                    dg.VerticalScrollBarVisibility = ScrollBarVisibility.Hidden;
-                                    dg.ColumnHeaderHeight = paramColumnHeaderHeight;
-                                    dg.RowHeight = paramRowHeight;
-                                    dg.UpdateLayout();
-
-                                    //Total_Row to show depends upon:   dg.Height=  (Total_Row x dg.RowHeight ) + dg.ColumnHeaderHeight 
-                                    Rows_Per_Page = Convert.ToInt32((dg.Height - dg.ColumnHeaderHeight) / dg.RowHeight);
-
-                                }
-                                else if (cnt > 1)
-                                {
-                                    inner_page.Width = (Total_Width > inner_page.Width.Presentation) ? new XUnit(Total_Width + 30, XGraphicsUnit.Presentation) : inner_page.Width;
-
-                                    if (Remaining >= Rows_Per_Page)
-                                    {
-                                        dg.SelectedIndex = RowCount - 1;
-                                        dg.UpdateLayout();
-                                        dg.ScrollIntoView(dg.SelectedItem, dg.Columns[dg.Columns.Count - 1]);
-                                        dg.UpdateLayout();
-                                        dg.SelectedIndex = (cnt - 1) * Rows_Per_Page;
-                                        dg.UpdateLayout();
-                                    }
-                                    else if (Remaining < Rows_Per_Page)
-                                    {
-                                        dg.Height = (Remaining * dg.RowHeight) + dg.ColumnHeaderHeight;
-                                        dg.SelectedIndex = RowCount - 1;
-                                        dg.UpdateLayout();
-                                    }
-
-                                    if (dg.SelectedIndex >= RowCount) dg.SelectedIndex = RowCount - 1;
-
-                                    dg.ScrollIntoView(dg.SelectedItem, dg.Columns[dg.Columns.Count - 1]);
-                                }
-
-                                if (IsHeaderForPDF)
-                                {
-                                    mstream = GetImageStream(new WriteableBitmap(new UC_CCG_Header(), null));
-                                    inner_gfx1.DrawImage(XImage.FromStream(mstream), 5, 5);
-                                    XPen line = new XPen(XColor.FromKnownColor(XKnownColor.Gray), 0.5);
-                                    XBrush brush = new XSolidBrush(XColor.FromKnownColor(XKnownColor.Gray));
-                                    inner_gfx1.DrawLine(line, new Point(70, 30), new Point(inner_page.Width - 10, 30));
-                                    inner_gfx1.DrawString(strHeader, new XFont("Arial", 12), brush, new XPoint(70, 27));
-                                }
-
-                                dg.UpdateLayout();
-                                mstream = GetImageStream(new WriteableBitmap(dg, null));
-                                inner_gfx1.DrawImage(XImage.FromStream(mstream), 10, 50);
-
-                                if (IsFooterForPDF)
-                                {
-                                    XPen line = new XPen(XColor.FromKnownColor(XKnownColor.Gray), 0.5);
-                                    XBrush brush = new XSolidBrush(XColor.FromKnownColor(XKnownColor.Gray));
-                                    inner_gfx1.DrawLine(line, new Point(5, inner_page.Height - 20), new Point(inner_page.Width - 10, inner_page.Height - 20));
-                                    inner_gfx1.DrawString("(c) Copyright 2012 Clear Cell All Rights Reserved.", new XFont("Arial", 8), brush, new XPoint((inner_page.Width / 2) - 100, inner_page.Height - 10));//©
-                                }
-                            }
-                        }
-                        else
-                        {
                             PdfPage inner_page = document.AddPage();
                             XGraphics inner_gfx1 = XGraphics.FromPdfPage(inner_page);
 
-                            mstream = GetImageStream(new WriteableBitmap(uc, null));
-                            XImage xImg = XImage.FromStream(mstream);
-                            double temp_Width = xImg.PixelWidth;
-                            inner_page.Width = (temp_Width > inner_page.Width.Presentation) ? new XUnit(temp_Width + 30, XGraphicsUnit.Presentation) : inner_page.Width;
+                            if (cnt == 1)
+                            {
+                                //Backup Original Data
+                                temp_ActualHeight = dg.Height.ToString() == double.NaN.ToString() ? double.NaN : dg.ActualHeight;
+                                temp_ActualWidth = dg.Width.ToString() == double.NaN.ToString() ? double.NaN : dg.ActualWidth;
+                                temp_ColumnHeaderHeight = dg.ColumnHeaderHeight;
+                                temp_RowHeight = dg.RowHeight;
+                                temp_Margin = dg.Margin;
+                                temp_ActualHorizontalScrollBarVisibility = dg.HorizontalScrollBarVisibility;
 
+                                //Setting control for Proper GUI
+                                dg.Margin = new Thickness(-100, temp_Margin.Top, -2000, temp_Margin.Bottom);
+                                dg.Width = Total_Width;
+                                inner_page.Width = (Total_Width > inner_page.Width.Presentation) ? new XUnit(Total_Width + 25, XGraphicsUnit.Presentation) : inner_page.Width;
+                                dg.Height = inner_page.Height + 170;
+                                dg.HorizontalScrollBarVisibility = ScrollBarVisibility.Hidden;
+                                dg.VerticalScrollBarVisibility = ScrollBarVisibility.Hidden;
+                                dg.ColumnHeaderHeight = paramColumnHeaderHeight;
+                                dg.RowHeight = paramRowHeight;
+                                dg.UpdateLayout();
+
+                                //Total_Row to show depends upon:   dg.Height=  (Total_Row x dg.RowHeight ) + dg.ColumnHeaderHeight 
+                                Rows_Per_Page = Convert.ToInt32((dg.Height - dg.ColumnHeaderHeight) / dg.RowHeight);
+
+                            }
+                            else if (cnt > 1)
+                            {
+                                inner_page.Width = (Total_Width > inner_page.Width.Presentation) ? new XUnit(Total_Width + 30, XGraphicsUnit.Presentation) : inner_page.Width;
+
+                                if (Remaining >= Rows_Per_Page)
+                                {
+                                    dg.SelectedIndex = RowCount - 1;
+                                    dg.UpdateLayout();
+                                    dg.ScrollIntoView(dg.SelectedItem, dg.Columns[dg.Columns.Count - 1]);
+                                    dg.UpdateLayout();
+                                    dg.SelectedIndex = (cnt - 1) * Rows_Per_Page;
+                                    dg.UpdateLayout();
+                                }
+                                else if (Remaining < Rows_Per_Page)
+                                {
+                                    dg.Height = (Remaining * dg.RowHeight) + dg.ColumnHeaderHeight;
+                                    dg.SelectedIndex = RowCount - 1;
+                                    dg.UpdateLayout();
+                                }
+
+                                if (dg.SelectedIndex >= RowCount) dg.SelectedIndex = RowCount - 1;
+
+                                dg.ScrollIntoView(dg.SelectedItem, dg.Columns[dg.Columns.Count - 1]);
+                            }
 
                             if (IsHeaderForPDF)
                             {
-                                mstream = GetImageStream(new WriteableBitmap(new UC_CCG_Header(), null));
+                                RenderTargetBitmap rtbHeader = new RenderTargetBitmap((int)dg.ActualWidth, (int)dg.ActualHeight, 96, 96, System.Windows.Media.PixelFormats.Rgba64);
+                                rtbHeader.Render(new TextBox() { Text = "Test Header Text" });
+                                mstream = GetImageStream(new WriteableBitmap(rtbHeader));
                                 inner_gfx1.DrawImage(XImage.FromStream(mstream), 5, 5);
                                 XPen line = new XPen(XColor.FromKnownColor(XKnownColor.Gray), 0.5);
                                 XBrush brush = new XSolidBrush(XColor.FromKnownColor(XKnownColor.Gray));
-                                inner_gfx1.DrawLine(line, new Point(70, 30), new Point(inner_page.Width - 10, 30));
-                                inner_gfx1.DrawString(strHeader, new XFont("Arial", 12), brush, new XPoint(70, 27));
+                                inner_gfx1.DrawLine(line, new XPoint(70, 30), new XPoint(inner_page.Width - 10, 30));
+                                //inner_gfx1.DrawString(strHeader,new XFont("Arial", 12), brush, new XPoint(70, 27));
                             }
 
-                            inner_gfx1.DrawImage(xImg, 10, 50);
+                            dg.UpdateLayout();
+
+                            RenderTargetBitmap rtb = new RenderTargetBitmap((int)dg.ActualWidth, (int)dg.ActualHeight,
+                                96, 96, System.Windows.Media.PixelFormats.Default);
+                            rtb.Render(dg);
+                            BitmapSource bsource = rtb;
+                            inner_gfx1.DrawImage(XImage.FromBitmapSource(bsource), 10, 50);
+
+                            //mstream = GetImageStream(new WriteableBitmap(rtb));
+                            //inner_gfx1.DrawImage(XImage.FromStream(mstream), 10, 50);
 
                             if (IsFooterForPDF)
                             {
                                 XPen line = new XPen(XColor.FromKnownColor(XKnownColor.Gray), 0.5);
                                 XBrush brush = new XSolidBrush(XColor.FromKnownColor(XKnownColor.Gray));
-                                inner_gfx1.DrawLine(line, new Point(5, inner_page.Height - 20), new Point(inner_page.Width - 10, inner_page.Height - 20));
-                                inner_gfx1.DrawString("(c) Copyright 2012 Clear Cell All Rights Reserved.", new XFont("Arial", 8), brush, new XPoint((inner_page.Width / 2) - 100, inner_page.Height - 10));//©
+                                //inner_gfx1.DrawLine(line, new Point(5, inner_page.Height - 20), new Point(inner_page.Width - 10, inner_page.Height - 20));
+                                //inner_gfx1.DrawString("(c) Copyright 2012 Clear Cell All Rights Reserved.", new XFont("Arial", 8), brush, new XPoint((inner_page.Width / 2) - 100, inner_page.Height - 10));//©
                             }
                         }
                         document.Save(saveDlg.OpenFile());
@@ -274,18 +249,15 @@ namespace MNDataSearch.Helper
                     }
                     finally
                     {
-                        if (uc is DataGrid)
-                        {
-                            dg.Height = temp_ActualHeight;
-                            dg.Width = temp_ActualWidth;
-                            dg.HorizontalScrollBarVisibility = temp_ActualHorizontalScrollBarVisibility;
-                            dg.VerticalScrollBarVisibility = temp_ActualHorizontalScrollBarVisibility;
-                            dg.Margin = temp_Margin;
-                            dg.ColumnHeaderHeight = temp_ColumnHeaderHeight;
-                            dg.RowHeight = temp_RowHeight;
-                            //dg.IsEnabled = true;
-                            dg.UpdateLayout();
-                        }
+                        dg.Height = temp_ActualHeight;
+                        dg.Width = temp_ActualWidth;
+                        dg.HorizontalScrollBarVisibility = temp_ActualHorizontalScrollBarVisibility;
+                        dg.VerticalScrollBarVisibility = temp_ActualHorizontalScrollBarVisibility;
+                        dg.Margin = temp_Margin;
+                        dg.ColumnHeaderHeight = temp_ColumnHeaderHeight;
+                        dg.RowHeight = temp_RowHeight;
+                        //dg.IsEnabled = true;
+                        dg.UpdateLayout();
                     }
                 }
             }
@@ -507,24 +479,24 @@ namespace MNDataSearch.Helper
 
                                     if (IsHeaderForPDF)
                                     {
-                                        mstream = GetImageStream(new WriteableBitmap(new UC_CCG_Header(), null));
-                                        inner_gfx1.DrawImage(XImage.FromStream(mstream), 5, 5);
-                                        XPen line = new XPen(XColor.FromKnownColor(XKnownColor.Gray), 0.5);
-                                        XBrush brush = new XSolidBrush(XColor.FromKnownColor(XKnownColor.Gray));
-                                        inner_gfx1.DrawLine(line, new XPoint(70, 30), new XPoint(inner_page.Width - 10, 30));
-                                        inner_gfx1.DrawString(strHeader, new XFont("Arial", 12), brush, new XPoint(70, 27));
+                                        //mstream = GetImageStream(new WriteableBitmap(new UC_CCG_Header(), null));
+                                        //inner_gfx1.DrawImage(XImage.FromStream(mstream), 5, 5);
+                                        //XPen line = new XPen(XColor.FromKnownColor(XKnownColor.Gray), 0.5);
+                                        //XBrush brush = new XSolidBrush(XColor.FromKnownColor(XKnownColor.Gray));
+                                        //inner_gfx1.DrawLine(line, new XPoint(70, 30), new XPoint(inner_page.Width - 10, 30));
+                                        //inner_gfx1.DrawString(strHeader, new XFont("Arial", 12), brush, new XPoint(70, 27));
                                     }
 
                                     dg.UpdateLayout();
-                                    mstream = GetImageStream(new WriteableBitmap(dg, null));
-                                    inner_gfx1.DrawImage(XImage.FromStream(mstream), 10, 50);
+                                    //mstream = GetImageStream(new WriteableBitmap(dg, null));
+                                    //inner_gfx1.DrawImage(XImage.FromStream(mstream), 10, 50);
 
                                     if (IsFooterForPDF)
                                     {
-                                        XPen line = new XPen(XColor.FromKnownColor(XKnownColor.Gray), 0.5);
-                                        XBrush brush = new XSolidBrush(XColor.FromKnownColor(XKnownColor.Gray));
-                                        inner_gfx1.DrawLine(line, new Point(5, inner_page.Height - 20), new Point(inner_page.Width - 10, inner_page.Height - 20));
-                                        inner_gfx1.DrawString("(c) Copyright 2012 Clear Cell All Rights Reserved.", new XFont("Arial", 8), brush, new XPoint((inner_page.Width / 2) - 100, inner_page.Height - 10));//©
+                                        //XPen line = new XPen(XColor.FromKnownColor(XKnownColor.Gray), 0.5);
+                                        //XBrush brush = new XSolidBrush(XColor.FromKnownColor(XKnownColor.Gray));
+                                        //inner_gfx1.DrawLine(line, new Point(5, inner_page.Height - 20), new Point(inner_page.Width - 10, inner_page.Height - 20));
+                                        //inner_gfx1.DrawString("(c) Copyright 2012 Clear Cell All Rights Reserved.", new XFont("Arial", 8), brush, new XPoint((inner_page.Width / 2) - 100, inner_page.Height - 10));//©
                                     }
                                 }
                             }
@@ -532,29 +504,29 @@ namespace MNDataSearch.Helper
                             {
                                 PdfPage inner_page = document.AddPage();
                                 XGraphics inner_gfx1 = XGraphics.FromPdfPage(inner_page);
-                                mstream = GetImageStream(new WriteableBitmap(uc, null));
-                                XImage xImg = XImage.FromStream(mstream);
-                                double temp_Width = xImg.PixelWidth;
-                                inner_page.Width = (temp_Width > inner_page.Width.Presentation) ? new XUnit(temp_Width + 30, XGraphicsUnit.Presentation) : inner_page.Width;
+                                //mstream = GetImageStream(new WriteableBitmap(uc, null));
+                                //XImage xImg = XImage.FromStream(mstream);
+                                //double temp_Width = xImg.PixelWidth;
+                                //inner_page.Width = (temp_Width > inner_page.Width.Presentation) ? new XUnit(temp_Width + 30, XGraphicsUnit.Presentation) : inner_page.Width;
 
                                 if (IsHeaderForPDF)
                                 {
-                                    mstream = GetImageStream(new WriteableBitmap(new UC_CCG_Header(), null));
-                                    inner_gfx1.DrawImage(XImage.FromStream(mstream), 5, 5);
-                                    XPen line = new XPen(XColor.FromKnownColor(XKnownColor.Gray), 0.5);
-                                    XBrush brush = new XSolidBrush(XColor.FromKnownColor(XKnownColor.Gray));
-                                    inner_gfx1.DrawLine(line, new Point(70, 30), new Point(inner_page.Width - 10, 30));
-                                    inner_gfx1.DrawString(strHeader, new XFont("Arial", 12), brush, new XPoint(70, 27));
+                                    //mstream = GetImageStream(new WriteableBitmap(new UC_CCG_Header(), null));
+                                    //inner_gfx1.DrawImage(XImage.FromStream(mstream), 5, 5);
+                                    //XPen line = new XPen(XColor.FromKnownColor(XKnownColor.Gray), 0.5);
+                                    //XBrush brush = new XSolidBrush(XColor.FromKnownColor(XKnownColor.Gray));
+                                    //inner_gfx1.DrawLine(line, new Point(70, 30), new Point(inner_page.Width - 10, 30));
+                                    //inner_gfx1.DrawString(strHeader, new XFont("Arial", 12), brush, new XPoint(70, 27));
                                 }
 
-                                inner_gfx1.DrawImage(xImg, 10, 50);
+                                //inner_gfx1.DrawImage(xImg, 10, 50);
 
                                 if (IsFooterForPDF)
                                 {
-                                    XPen line = new XPen(XColor.FromKnownColor(XKnownColor.Gray), 0.5);
-                                    XBrush brush = new XSolidBrush(XColor.FromKnownColor(XKnownColor.Gray));
-                                    inner_gfx1.DrawLine(line, new Point(5, inner_page.Height - 20), new Point(inner_page.Width - 10, inner_page.Height - 20));
-                                    inner_gfx1.DrawString("(c) Copyright 2012 Clear Cell All Rights Reserved.", new XFont("Arial", 8), brush, new XPoint((inner_page.Width / 2) - 100, inner_page.Height - 10));//©
+                                    //XPen line = new XPen(XColor.FromKnownColor(XKnownColor.Gray), 0.5);
+                                    //XBrush brush = new XSolidBrush(XColor.FromKnownColor(XKnownColor.Gray));
+                                    //inner_gfx1.DrawLine(line, new Point(5, inner_page.Height - 20), new Point(inner_page.W////..idth - 10, inner_page.Height - 20));
+                                    //inner_gfx1.DrawString("(c) Copyright 2012 Clear Cell All Rights Reserved.", new XFont("Arial", 8), brush, new XPoint((inner_page.Width / 2) - 100, inner_page.Height - 10));//©
                                 }
                             }
                         }
@@ -632,7 +604,9 @@ namespace MNDataSearch.Helper
             {
                 for (int column = 0; column < width; column++)
                 {
-                    int pixel = bitmap.Pixels[width * row + column];
+                    //int pixel = bitmap.Pixels[width * row + column];
+                    int pixel = width * row + column;
+
                     raster[0][column, row] = (byte)(pixel >> 16);
                     raster[1][column, row] = (byte)(pixel >> 8);
                     raster[2][column, row] = (byte)pixel;

@@ -1,12 +1,15 @@
-﻿using MNDataSearch.Models;
+﻿using MNDataSearch.Helper;
+using MNDataSearch.Models;
 using MNDataSearch.View;
 using MNDataSearch.ViewModels;
 using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
+using System.Collections.Generic; 
 using System.Linq;
+using System.Linq.Expressions;
+using System.Printing;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Documents;
 using System.Windows.Input;
 
 namespace MNDataSearch
@@ -90,7 +93,7 @@ namespace MNDataSearch
             string subCategory = lbSubcategory.SelectedValue == null ? all : lbSubcategory.SelectedValue.ToString();
             string director = cmbDirector.SelectedValue == null ? all : cmbDirector.SelectedValue.ToString();
             string mainClass = lbMainClass.SelectedValue == null ? all : lbMainClass.SelectedValue.ToString();
-            string keyword = string.IsNullOrWhiteSpace(txtKeyword.Text) ? all : txtKeyword.Text.Trim();
+            string keyword = string.IsNullOrWhiteSpace(txtKeyword.Text) ? all : txtKeyword.Text.Trim().ToLower();
             string language = cmbLanguage.SelectedValue == null ? all : cmbLanguage.SelectedValue.ToString();
             string year = cmbYear.SelectedValue == null ? all : cmbYear.SelectedValue.ToString();
 
@@ -105,15 +108,30 @@ namespace MNDataSearch
                            && (language == all ? true : v.Language == language)
                            && (year == all ? true : v.Year.ToString() == year)
                            && (rbBoth.IsChecked.Value ? true : (rbBW.IsChecked.Value ? (v.bW.ToLower() == "b&w") : (v.bW.ToLower() == "col")))
-                           && (keyword == all ? true : (v.Title.Contains(keyword) || v.Category.Contains(keyword) ||
-                                                       v.MainClass.Contains(keyword) || v.SubCategory.Contains(keyword) ||
-                                                       v.Director.Contains(keyword) || v.Language.Contains(keyword) ||
-                                                       v.Synopsis.Contains(keyword)))
+                           && (keyword == all ? true : (v.Title.ToLower().Contains(keyword) || v.Category.ToLower().Contains(keyword) ||
+                                                       v.MainClass.ToLower().Contains(keyword) || v.SubCategory.ToLower().Contains(keyword) ||
+                                                       v.Director.ToLower().Contains(keyword) || v.Language.ToLower().Contains(keyword) ||
+                                                       v.Synopsis.ToLower().Contains(keyword)))
                     ).ToList();
+
         }
 
         private void btnAdvSearch_Click(object sender, RoutedEventArgs e)
         {
+            if ((dgResult.ItemsSource as List<Catlouge>).Count == 0 && txtSearch.Text.Trim().Length > 2)
+            {
+                var spellingErrorIndex = txtSearch.Text.Length;
+                do
+                {
+                    var spellingError = txtSearch.GetSpellingError(spellingErrorIndex);
+                    if (spellingError != null)
+                    {
+                        var suggestions = spellingError.Suggestions;    //suggests "consideration of"
+                        spellingError.Correct(suggestions.First());
+                    }
+                    spellingErrorIndex = txtSearch.GetNextSpellingErrorCharacterIndex(spellingErrorIndex, System.Windows.Documents.LogicalDirection.Backward);
+                } while (spellingErrorIndex >= 0);
+            }
             FilterData();
         }
 
@@ -146,32 +164,68 @@ namespace MNDataSearch
         {
             this.DialogResult = true;
         }
-        double someFixHeight = 520;
         private void btnPrint_Click(object sender, RoutedEventArgs e)
         {
-            int count = (dgResult.ItemsSource as List<Catlouge>).Count;
-            dgResult.Height = ((count / 9.5) * someFixHeight);
-            //SelectColumns sc = new SelectColumns();
-            //sc.dg = dgResult;
-            //sc.SourceToPrint = dgResult.Columns;
-            //sc.ShowDialog();
-
-            System.Windows.Controls.PrintDialog Printdlg = new System.Windows.Controls.PrintDialog();
-            if ((bool)Printdlg.ShowDialog().GetValueOrDefault())
+            //double someFixHeight = 520;
+            //int count = (dgResult.ItemsSource as List<Catlouge>).Count;
+            //dgResult.Height = ((count / 9.5) * someFixHeight);
+            try
             {
-                Size pageSize = new Size(Printdlg.PrintableAreaHeight, Printdlg.PrintableAreaWidth);
-                // sizing of the element.
-                dgResult.Measure(pageSize);
+                PrintDialog printDialog = new PrintDialog();
+                PageMediaSize pageSize = new PageMediaSize(PageMediaSizeName.ISOA4);
+                printDialog.PrintTicket.PageMediaSize = pageSize;
+                printDialog.PrintTicket.PageOrientation = System.Printing.PageOrientation.Landscape;
 
-                dgResult.Arrange(new Rect(5, 5, pageSize.Width, pageSize.Height));
-                Printdlg.PrintVisual(dgResult, "Search Result");
+                bool? pdResult = printDialog.ShowDialog();
+                if (pdResult != null && pdResult.Value)
+                {
+                    FixedDocument document;
+                    if (dgResult.SelectedItems.Count > 0)
+                    {
+                        List<Catlouge> selectedItems =new List<Catlouge>();
+                        foreach (var item in dgResult.SelectedItems)
+                        {
+                            selectedItems.Add(item as Catlouge); 
+                        }
+                        List<Catlouge> existingList = (dgResult.ItemsSource as List<Catlouge>).ToList();
+                        dgResult.ItemsSource = selectedItems;
+                        dgResult.UpdateLayout();
+
+                        document = PrintHelper.CreateFixedDocument(dgResult, "Header", 30, 50);
+                        printDialog.PrintDocument(document.DocumentPaginator, "Search Results");
+
+                        dgResult.ItemsSource = existingList;
+                        dgResult.UpdateLayout();
+                    }
+                    else
+                    {
+                        document = PrintHelper.CreateFixedDocument(dgResult, "Header", 30, 50);
+                        printDialog.PrintDocument(document.DocumentPaginator, "Search Results");
+                    }
+                }
             }
-            dgResult.Height = someFixHeight;
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message + " : " + ex.InnerException);
+            }
+            //dgResult.Height = someFixHeight;
         }
 
         private void lbMainClass_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             PopulateSubCategories(lbMainClass.SelectedValue.ToString());
+        }
+
+        private void txtKeyword_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            FilterData();
+        }
+
+        private void btnColumns_Click(object sender, RoutedEventArgs e)
+        {
+            SelectColumns sc = new SelectColumns();
+            sc.dgResult = dgResult;
+            sc.ShowDialog();
         }
 
         //private void dataGridView1_CellPainting(object sender, DataGridCellEditingEventArgs e)
