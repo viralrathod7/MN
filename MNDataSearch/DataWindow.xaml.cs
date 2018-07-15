@@ -183,15 +183,14 @@ namespace MNDataSearch
                     if (dgResult.SelectedItems.Count > 0)
                     {
                         List<Catlouge> selectedItems =new List<Catlouge>();
-                        foreach (var item in dgResult.SelectedItems)
-                        {
-                            selectedItems.Add(item as Catlouge); 
-                        }
+                        foreach (var item in dgResult.SelectedItems)  
+                            selectedItems.Add(item as Catlouge);  
                         List<Catlouge> existingList = (dgResult.ItemsSource as List<Catlouge>).ToList();
+
                         dgResult.ItemsSource = selectedItems;
                         dgResult.UpdateLayout();
 
-                        document = PrintHelper.CreateFixedDocument(dgResult, "Header", 30, 50);
+                        document = PrintHelper.CreateFixedDocument(dgResult, "Header", 30, 60);
                         printDialog.PrintDocument(document.DocumentPaginator, "Search Results");
 
                         dgResult.ItemsSource = existingList;
@@ -199,7 +198,7 @@ namespace MNDataSearch
                     }
                     else
                     {
-                        document = PrintHelper.CreateFixedDocument(dgResult, "Header", 30, 50);
+                        document = PrintHelper.CreateFixedDocument(dgResult, "Header", 30, 60);
                         printDialog.PrintDocument(document.DocumentPaginator, "Search Results");
                     }
                 }
