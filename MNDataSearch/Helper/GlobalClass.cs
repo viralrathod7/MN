@@ -178,15 +178,9 @@ namespace MNDataSearch.Helper
                 {
                     cn.Open();
                     OleDbCommand cmd = new OleDbCommand("Select * from [Sheet1$] ", cn);
-                    //var dr = await cmd.ExecuteReaderAsync();
-                    System.Data.DataTable dt = new System.Data.DataTable();
-                    using (OleDbDataAdapter da = new OleDbDataAdapter())
-                    {
-                        da.SelectCommand = cmd;
-                        da.Fill(dt);
-                    }
+                    var dr = await cmd.ExecuteReaderAsync();
                     Catlouge ct;
-                    foreach (System.Data.DataRow dr in dt.Rows)
+                    while (dr.Read())
                     {
                         ct = new Catlouge();
                         if (dr["Sr No"] == DBNull.Value) break;
@@ -203,7 +197,7 @@ namespace MNDataSearch.Helper
                         ct.Duration = Convert.ToDouble(dr["DURATION"] == DBNull.Value ? 0.0 : dr["DURATION"]);
                         ct.bW = Convert.ToString(dr["B&W"]).Trim();
                         ct.Director = Convert.ToString(dr["DIRECTOR"]).Trim();
-                        ct.Producer = dt.Columns.Contains("Producer") ? Convert.ToString(dr["Producer"]).Trim() : "";
+                        ct.Producer = "";// dt.Columns.Contains("Producer") ? Convert.ToString(dr["Producer"]).Trim() : "";
                         ct.MainClass = Convert.ToString(dr["Main Class"]).Trim();
                         ct.MainClass2 = Convert.ToString(dr["Main Class2"]).Trim();
                         ct.CastCrew = Convert.ToString(dr["Cast & Crew"]).Trim();

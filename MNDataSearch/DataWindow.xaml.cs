@@ -82,7 +82,7 @@ namespace MNDataSearch
         private void PopulateSubCategories(string MainClassName)
         {
             lbSubcategory.ItemsSource = Helper.GlobalClass.MainClass.Where(v => v.Name == MainClassName).FirstOrDefault().SubCategory;
-            lbSubcategory.SelectedItem = 0;
+            lbSubcategory.SelectedIndex = 0;
         }
         private void FilterData()
         {
