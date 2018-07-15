@@ -39,13 +39,18 @@ namespace MNDataSearch.Helper
             {
                 AccessDatabaseLocation = ConfigurationSettings.AppSettings["AccessDatabaseLocation"];
                 if (AccessDatabaseLocation == "ROOT")
+                {
                     AccessDatabaseLocation = AppDomain.CurrentDomain.BaseDirectory + @"App_Data\SearchCatlouge.mdb";
+                    ExcelFileLocation = AppDomain.CurrentDomain.BaseDirectory + @"App_Data\Search Engine.xlsx";
+                }
             }
             else
             {
+                ExcelFileLocation = AppDomain.CurrentDomain.BaseDirectory + @"App_Data\Search Engine.xlsx";
                 AccessDatabaseLocation = AppDomain.CurrentDomain.BaseDirectory + @"App_Data\SearchCatlouge.mdb";
             }
             ConnectionString = @"Provider=Microsoft.Jet.OLEDB.4.0;Data Source=" + AccessDatabaseLocation + ";Persist Security Info=True";
+            ConnectionStringExcel = @"Provider=Microsoft.ACE.OLEDB.12.0;Data Source = " + ExcelFileLocation + ";" + "Extended Properties = 'Excel 12.0 Xml;HDR=YES;'";
 
             if (!IsFileExists())
             {
