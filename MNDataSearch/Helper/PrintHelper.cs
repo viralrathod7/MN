@@ -132,6 +132,8 @@ namespace MNDataSearch.Helper
                 dg.ColumnHeaderHeight = temp_ColumnHeaderHeight;
                 dg.RowHeight = temp_RowHeight;
                 //dg.IsEnabled = true;
+                dg.SelectedIndex = 0;
+                dg.ScrollIntoView(dg.SelectedItem, dg.Columns[dg.Columns.Count - 1]);
                 dg.UpdateLayout();
             }
 

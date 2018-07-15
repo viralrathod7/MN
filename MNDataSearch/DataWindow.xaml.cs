@@ -3,7 +3,7 @@ using MNDataSearch.Models;
 using MNDataSearch.View;
 using MNDataSearch.ViewModels;
 using System;
-using System.Collections.Generic; 
+using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Printing;
@@ -100,16 +100,17 @@ namespace MNDataSearch
             dgResult.ItemsSource = Helper.GlobalClass.Data.Where(v =>
                    (string.IsNullOrEmpty(strTitle) ? true : v.Title.ToLower().Contains(strTitle))
                        && (category == all ? true : v.Category == category)
-                           && (subCategory == all ? true : v.SubCategory == subCategory)
+                           && (subCategory == all ? true : (v.SubCategory == subCategory || v.SubCategory2 == subCategory))
                            && (v.Duration <= sliderDuration.Value)
                            && (director == all ? true : v.Director == director)
-                           && (mainClass == all ? true : v.MainClass == mainClass)
+                           && (mainClass == all ? true : (v.MainClass == mainClass || v.MainClass2 == mainClass))
                            //             && (producer == all ? true : v.Producer == producer)
                            && (language == all ? true : v.Language == language)
                            && (year == all ? true : v.Year.ToString() == year)
                            && (rbBoth.IsChecked.Value ? true : (rbBW.IsChecked.Value ? (v.bW.ToLower() == "b&w") : (v.bW.ToLower() == "col")))
                            && (keyword == all ? true : (v.Title.ToLower().Contains(keyword) || v.Category.ToLower().Contains(keyword) ||
                                                        v.MainClass.ToLower().Contains(keyword) || v.SubCategory.ToLower().Contains(keyword) ||
+                                                       v.MainClass2.ToLower().Contains(keyword) || v.SubCategory2.ToLower().Contains(keyword) ||
                                                        v.Director.ToLower().Contains(keyword) || v.Language.ToLower().Contains(keyword) ||
                                                        v.Synopsis.ToLower().Contains(keyword)))
                     ).ToList();
@@ -166,31 +167,28 @@ namespace MNDataSearch
         }
         private void btnPrint_Click(object sender, RoutedEventArgs e)
         {
-            //double someFixHeight = 520;
-            //int count = (dgResult.ItemsSource as List<Catlouge>).Count;
-            //dgResult.Height = ((count / 9.5) * someFixHeight);
-            try
-            {
-                PrintDialog printDialog = new PrintDialog();
-                PageMediaSize pageSize = new PageMediaSize(PageMediaSizeName.ISOA4);
-                printDialog.PrintTicket.PageMediaSize = pageSize;
-                printDialog.PrintTicket.PageOrientation = System.Printing.PageOrientation.Landscape;
+            PrintDialog printDialog = new PrintDialog();
+            PageMediaSize pageSize = new PageMediaSize(PageMediaSizeName.ISOA4);
+            printDialog.PrintTicket.PageMediaSize = pageSize;
+            printDialog.PrintTicket.PageOrientation = System.Printing.PageOrientation.Landscape;
 
-                bool? pdResult = printDialog.ShowDialog();
-                if (pdResult != null && pdResult.Value)
+            bool? pdResult = printDialog.ShowDialog();
+            if (pdResult != null && pdResult.Value)
+            {
+                try
                 {
                     FixedDocument document;
                     if (dgResult.SelectedItems.Count > 0)
                     {
-                        List<Catlouge> selectedItems =new List<Catlouge>();
-                        foreach (var item in dgResult.SelectedItems)  
-                            selectedItems.Add(item as Catlouge);  
                         List<Catlouge> existingList = (dgResult.ItemsSource as List<Catlouge>).ToList();
+                        List<Catlouge> selectedItems = new List<Catlouge>();
+                        foreach (var item in dgResult.SelectedItems)
+                            selectedItems.Add(item as Catlouge);
 
                         dgResult.ItemsSource = selectedItems;
                         dgResult.UpdateLayout();
 
-                        document = PrintHelper.CreateFixedDocument(dgResult, "Header", 30, 60);
+                        document = PrintHelper.CreateFixedDocument(dgResult, "Header", 30, 50);
                         printDialog.PrintDocument(document.DocumentPaginator, "Search Results");
 
                         dgResult.ItemsSource = existingList;
@@ -198,16 +196,15 @@ namespace MNDataSearch
                     }
                     else
                     {
-                        document = PrintHelper.CreateFixedDocument(dgResult, "Header", 30, 60);
+                        document = PrintHelper.CreateFixedDocument(dgResult, "Header", 30, 50);
                         printDialog.PrintDocument(document.DocumentPaginator, "Search Results");
                     }
                 }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message + " : " + ex.InnerException);
+                }
             }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message + " : " + ex.InnerException);
-            }
-            //dgResult.Height = someFixHeight;
         }
 
         private void lbMainClass_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -226,97 +223,5 @@ namespace MNDataSearch
             sc.dgResult = dgResult;
             sc.ShowDialog();
         }
-
-        //private void dataGridView1_CellPainting(object sender, DataGridCellEditingEventArgs e)
-        //{
-        //    if (e.RowIndex >= 0 & e.ColumnIndex >= 0 & IsSelected)
-        //    {
-        //        e.Handled = true;
-        //        e.PaintBackground(e.CellBounds, true);
-
-        //        string sw = txtSearch.Text;
-
-        //        if (!string.IsNullOrEmpty(sw))
-        //        {
-        //            string val = (string)e.FormattedValue;
-        //            int sindx = val.ToLower().IndexOf(sw.ToLower());
-        //            if (sindx >= 0)
-        //            {
-        //                Rectangle hl_rect = new Rectangle();
-        //                hl_rect.Y = e.CellBounds.Y + 2;
-        //                hl_rect.Height = e.CellBounds.Height - 5;
-
-        //                string sBefore = val.Substring(0, sindx);
-        //                string sWord = val.Substring(sindx, sw.Length);
-        //                Size s1 = TextRenderer.MeasureText(e.Graphics, sBefore, e.CellStyle.Font, e.CellBounds.Size);
-        //                Size s2 = TextRenderer.MeasureText(e.Graphics, sWord, e.CellStyle.Font, e.CellBounds.Size);
-
-        //                if (s1.Width > 5)
-        //                {
-        //                    hl_rect.X = e.CellBounds.X + s1.Width - 5;
-        //                    hl_rect.Width = s2.Width - 6;
-        //                }
-        //                else
-        //                {
-        //                    hl_rect.X = e.CellBounds.X + 2;
-        //                    hl_rect.Width = s2.Width - 6;
-        //                }
-
-        //                SolidBrush hl_brush = default(SolidBrush);
-        //                if (((e.State & DataGridViewElementStates.Selected) != DataGridViewElementStates.None))
-        //                {
-        //                    hl_brush = new SolidBrush(Color.DarkGoldenrod);
-        //                }
-        //                else
-        //                {
-        //                    hl_brush = new SolidBrush(Color.Yellow);
-        //                }
-
-        //                e.Graphics.FillRectangle(hl_brush, hl_rect);
-
-        //                hl_brush.Dispose();
-        //            }
-        //        }
-        //        e.PaintContent(e.CellBounds);
-        //    }
-        //} 
-        //private void dgResult_AutoGeneratingColumn(object sender, DataGridAutoGeneratingColumnEventArgs e)
-        //{
-        //    string str = Convert.ToString(e.Column.GetValue(DataGridCell.ContentProperty));
-        //    e.Cancel = true;
-        //    DataGridTemplateColumn col = new DataGridTemplateColumn();
-        //    //if (((System.Data.DataRowView)((((System.Windows.Controls.ItemsControl)(sender)).Items).CurrentItem)).Row.ItemArray[1] == "X")
-        //    //    col.CellTemplate = CreateCellTemplate(e.PropertyName);
-        //    //else
-        //    //    col.CellTemplate = CreateButtonTemplate(e.PropertyName);
-        //    //e.Column = col;
-        //    //fieldGrid.Columns.Add(col);
-        //    //fieldGrid.ColumnWidth = 10;
-        //}
-        //private static DataTemplate CreateCellTemplate(string propertyName)
-        //{
-        //    DataTemplate template = new DataTemplate();
-        //    FrameworkElementFactory stk = new FrameworkElementFactory(typeof(StackPanel));
-        //    stk.Name = "stackPanel";
-        //    stk.SetValue(StackPanel.OrientationProperty, Orientation.Vertical);
-        //    //stk.SetValue(TextBlock.MaxWidthProperty,10);
-        //    FrameworkElementFactory txtU = new FrameworkElementFactory(typeof(TextBlock));
-        //    txtU.Name = "txtUpper";
-        //    //txtU.SetValue(TextBlock.BackgroundProperty,new SolidColorBrush( Colors.YellowGreen)); 
-        //    //the color will be set from dataset 
-        //    txtU.SetValue(TextBlock.VerticalAlignmentProperty, VerticalAlignment.Top);
-        //    //txtU.SetValue(TextBlock.WidthProperty, new GridLength(10));
-        //    stk.AppendChild(txtU);
-        //    FrameworkElementFactory txtL = new FrameworkElementFactory(typeof(TextBlock));
-        //    txtL.Name = "txtLower";
-        //    //txtL.SetValue(TextBlock.BackgroundProperty, new SolidColorBrush(Colors.Tomato));
-        //    txtL.SetValue(TextBlock.VerticalAlignmentProperty, VerticalAlignment.Bottom);
-        //    // txtL.SetValue(TextBlock.WidthProperty, new GridLength(10));         
-        //    stk.AppendChild(txtL);
-        //    template.VisualTree = stk;
-        //    template.VisualTree.SetBinding(ContentProperty, new System.Windows.Data.Binding(propertyName));
-        //    return template;
-        //}
-
     }
 }

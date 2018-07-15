@@ -16,7 +16,8 @@ namespace MNDataSearch
         public MainWindow()
         {
             InitializeComponent();
-            Helper.GlobalClass.RefreshDataAsync();
+            //Helper.GlobalClass.RefreshDataAsync();
+            Helper.GlobalClass.RefreshExcelDataAsync();
             brAdvSearch.Visibility = Visibility.Collapsed;
             this.DataContext = vm;
             this.Loaded += MainWindow_Loaded;

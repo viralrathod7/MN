@@ -23,5 +23,7 @@ namespace MNDataSearch.Models
         public string Producer { get; set; }
         public string CastCrew { get; set; }
         public string MainClass { get; set; }
+        public string MainClass2 { get; set; }
+        public string SubCategory2 { get; set; }
     }
 }
