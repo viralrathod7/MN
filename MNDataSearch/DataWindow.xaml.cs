@@ -24,6 +24,7 @@ namespace MNDataSearch
             string pLang, double pDuration, string pYear, bool isBoth, bool isColor, bool isBW)
         {
             InitializeComponent();
+            this.SizeChanged += DataWindow_SizeChanged;
             this.DataContext = vm;
             PopulateCategories();
 
@@ -48,6 +49,14 @@ namespace MNDataSearch
                 rbBW.IsChecked = isBW;
 
             FilterData();
+        }
+
+        private void DataWindow_SizeChanged(object sender, SizeChangedEventArgs e)
+        {
+            if (dgResult != null && e.NewSize.Height - 125 - 40 - 40 > 100)
+            {
+                dgResult.Height = e.NewSize.Height - 125 - 40 - 40; 
+            }
         }
 
         private void dgResult_MouseDoubleClick(object sender, MouseButtonEventArgs e)
@@ -87,7 +96,7 @@ namespace MNDataSearch
         private void FilterData()
         {
             if (this.DataContext == null) return;
-
+            DateTime startTime = DateTime.Now;
             string strTitle = txtSearch.Text.Trim().ToLower();
             string category = lbCategory.SelectedValue == null ? all : lbCategory.SelectedValue.ToString();
             string subCategory = lbSubcategory.SelectedValue == null ? all : lbSubcategory.SelectedValue.ToString();
@@ -115,6 +124,7 @@ namespace MNDataSearch
                                                        v.Synopsis.ToLower().Contains(keyword)))
                     ).ToList();
 
+            tbTimeTaken.Text = (DateTime.Now - startTime).TotalSeconds.ToString("0.00 second(s)");
         }
 
         private void btnAdvSearch_Click(object sender, RoutedEventArgs e)
@@ -222,6 +232,11 @@ namespace MNDataSearch
             SelectColumns sc = new SelectColumns();
             sc.dgResult = dgResult;
             sc.ShowDialog();
+        }
+
+        private void btnClear_Click(object sender, RoutedEventArgs e)
+        {
+            txtSearch.Text = "";
         }
     }
 }

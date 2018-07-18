@@ -21,6 +21,15 @@
                     </MultiBinding>
                 </Setter.Value>
             </Setter>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type DataGridCell}">
+                        <Grid Background="{TemplateBinding Background}">
+                            <ContentPresenter VerticalAlignment="Center" />
+                        </Grid>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter> 
             <Style.Triggers>
                 <Trigger Property="helper:SearchOperations.IsMatch" Value="True">
                     <Setter Property="Background">

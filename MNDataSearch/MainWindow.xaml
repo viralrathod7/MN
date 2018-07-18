@@ -63,6 +63,7 @@
             <TextBlock  Text="Search For Title: " TextAlignment="Right" VerticalAlignment="Center" />
             <TextBox Name="txtSearch" FontSize="16" Foreground="Gray" Width="400" Padding="5" Margin="5" Text="{Binding ElementName=txtTitle,Path=Text,Mode=TwoWay}"/>
             <Button Content="Search" Name="btnSearch" Width="80" Height="34" Click="btnAdvSearch_Click"/>
+            <Button Content="Clear" Name="btnClear" Width="80" Height="34" Margin="10,0,0,0" Click="btnClear_Click"/>
         </StackPanel>
         
         <Button Content="Advance Search" Name="btnAdvSearchClick" Grid.Column="1" Grid.Row="3" Height="33" Width="120" HorizontalAlignment="Center" VerticalAlignment="Center" Click="btnAdvSearchClick_Click"/>

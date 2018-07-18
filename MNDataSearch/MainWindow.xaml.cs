@@ -93,5 +93,10 @@ namespace MNDataSearch
         {
             brAdvSearch.Visibility = Visibility.Collapsed;
         }
+
+        private void btnClear_Click(object sender, RoutedEventArgs e)
+        {
+            txtSearch.Text = "";
+        }
     }
 }
