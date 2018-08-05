@@ -8,10 +8,14 @@
 
         <helper:SearchTermConverter x:Key="SearchTermConverter" />
 
+        <Style x:Key="DataGridElementStyle">
+            <Setter Property="TextBlock.TextWrapping" Value="Wrap" />
+        </Style>
+        
         <Style x:Key="CellStyleBase" TargetType="DataGridCell">
             <!--<Setter Property="Margin" Value="4" />-->
         </Style>
-
+        
         <Style x:Key="TitleCell" TargetType="DataGridCell" BasedOn="{StaticResource CellStyleBase}">
             <Setter Property="helper:SearchOperations.IsMatch">
                 <Setter.Value>

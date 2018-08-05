@@ -69,7 +69,7 @@ namespace MNDataSearch.Helper
                         dg.UpdateLayout();
 
                         //Total_Row to show depends upon:   dg.Height=  (Total_Row x dg.RowHeight ) + dg.ColumnHeaderHeight 
-                        Rows_Per_Page = Convert.ToInt32((dg.Height - dg.ColumnHeaderHeight) / dg.RowHeight);
+                        Rows_Per_Page = Convert.ToInt32((dg.Height - dg.ColumnHeaderHeight) / dg.RowHeight) - 1;
                     }
                     else if (cnt > 1)
                     {

@@ -54,11 +54,11 @@ namespace MNDataSearch.Helper
 
             if (!IsFileExists())
             {
-                MessageBox.Show("Database does not exist on given path : " + AccessDatabaseLocation);
+                //MessageBox.Show("Database does not exist on given path : " + AccessDatabaseLocation);
             }
             else if (!IsDatabaseExists())
             {
-                MessageBox.Show("Database connectivity issues : " + ConnectionString);
+                //MessageBox.Show("Database connectivity issues : " + ConnectionString);
             }
             if (!IsFolderExists())
                 MessageBox.Show("Images folder does not exist : " + ImagesFolderPath);
@@ -268,6 +268,48 @@ namespace MNDataSearch.Helper
                         }
 
                         Data.Add(ct);
+                    }
+
+                    cmd = new OleDbCommand("Select * from [Sheet3$]", cn);
+                    dr = await cmd.ExecuteReaderAsync();
+                    while (dr.Read())
+                    {
+                        string strCategory = dr["Category"] == DBNull.Value ? string.Empty : Convert.ToString(dr["Category"]);
+                        if (!Categories.Contains(strCategory) && !string.IsNullOrWhiteSpace(strCategory))
+                            Categories.Add(strCategory);
+                    }
+
+                    cmd = new OleDbCommand("Select * from [Sheet4$]", cn);
+                    dr = await cmd.ExecuteReaderAsync();
+                    while (dr.Read())
+                    {
+                        string strMainClass = dr["MainClass"] == DBNull.Value ? string.Empty : Convert.ToString(dr["MainClass"]);
+                        string strSubClass = dr["SubClass"] == DBNull.Value ? string.Empty : Convert.ToString(dr["SubClass"]);
+
+                        if (!MainClass[0].SubCategory.Contains(strSubClass) && !string.IsNullOrWhiteSpace(strSubClass))
+                        {
+                            MainClass[0].SubCategory.Add(strSubClass);
+                        }
+
+
+                        if (!MainClass.Select(v => v.Name).Contains(strMainClass) && !string.IsNullOrWhiteSpace(strMainClass))
+                        {
+                            MainClass.Add(new MainClass
+                            {
+                                ID = MainClass.Count + 1,
+                                Name = strMainClass,
+                                SubCategory = new List<string>() { "All" }
+                            });
+
+                            if (!string.IsNullOrWhiteSpace(strSubClass))
+                                MainClass.Last().SubCategory.Add(strSubClass);
+                        }
+                        else if (!string.IsNullOrWhiteSpace(strMainClass))
+                        {
+                            MainClass catTemp = MainClass.Where(v => v.Name == strMainClass).FirstOrDefault();
+                            if (!catTemp.SubCategory.Contains(strSubClass) && !string.IsNullOrWhiteSpace(strSubClass))
+                                catTemp.SubCategory.Add(strSubClass);
+                        }
                     }
                     cn.Close();
                 }

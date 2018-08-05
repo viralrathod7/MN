@@ -12,6 +12,7 @@ namespace MNDataSearch
     /// </summary>
     public partial class MainWindow : Window
     {
+        string all = "All";
         MainWindowViewModel vm = new MainWindowViewModel();
         public MainWindow()
         {
@@ -53,6 +54,9 @@ namespace MNDataSearch
             sliderDuration.Minimum = Helper.GlobalClass.Data.Min(v => v.Duration);
             sliderDuration.Maximum = Helper.GlobalClass.Data.Max(v => v.Duration);
             sliderDuration.Value = Helper.GlobalClass.Data.Max(v => v.Duration);
+
+            txtSearch.Text = "";
+            txtKeyword.Text = "";
         }
 
 
@@ -97,6 +101,11 @@ namespace MNDataSearch
         private void btnClear_Click(object sender, RoutedEventArgs e)
         {
             txtSearch.Text = "";
+        }
+
+        private void btnAdvClear_Click(object sender, RoutedEventArgs e)
+        {
+            PopulateData();
         }
     }
 }

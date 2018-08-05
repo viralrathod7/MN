@@ -32,21 +32,23 @@
                     </GradientStopCollection>
                 </LinearGradientBrush>
             </Border.Background>
-
+            
         </Border>
- 
+        
         <Border Grid.Row="0" Grid.Column="1" Grid.RowSpan="6" Grid.ColumnSpan="2">
             <Border.Background>
-                <LinearGradientBrush >
+                <ImageBrush  ImageSource="Images/MainpageBackgroundCropped.jpg" Stretch="Fill" >
+                </ImageBrush>
+                <!--<LinearGradientBrush >
                     <GradientStopCollection>
                         <GradientStop Color="AliceBlue" Offset="0.5" />
                         <GradientStop Color="LightBlue"/>
                     </GradientStopCollection>
-                </LinearGradientBrush>
+                </LinearGradientBrush>-->
             </Border.Background>
         </Border>
         <StackPanel Grid.Row="0" Grid.Column="0" Grid.RowSpan="6" Orientation="Vertical" HorizontalAlignment="Center" 
-                    VerticalAlignment="Top"> 
+                    VerticalAlignment="Top">
             <Image  Source="Images/MainpageLogo.png" Height="300" Width="500" Margin="15" />
             <TextBlock TextWrapping="Wrap" Width="500" TextAlignment="Justify" FontSize="13" Foreground="White" Margin="10,-10,10,0" Text="Films Division of India was established in 1948 to articulate the energy of a newly independent nation. For more than six decades, the organization has relentlessly striven to maintain a record of the social, political and cultural imaginations and realities of the country on film. It has actively worked in encouraging and promoting a culture of film-making in India that respects individual vision and social commitment." />
             <TextBlock TextWrapping="Wrap" Width="500" TextAlignment="Justify" FontSize="13" Foreground="White" Margin="10,10,10,0" Text="It is the main film-medium organization of the Government of India and is well equipped with trained film personnel, cameras, recording and editing facilities. This infrastructure is put to use to assist in-house as well as free-lance film makers and producers." />
@@ -60,14 +62,14 @@
         <TextBlock Grid.Row="1" Grid.Column="1" FontSize="18" Foreground="Gray" Text="Films Division Catalogue" VerticalAlignment="Bottom" HorizontalAlignment="Center" />
 
         <StackPanel Grid.Row="2" Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
-            <TextBlock  Text="Search For Title: " TextAlignment="Right" VerticalAlignment="Center" />
+            <TextBlock  Text="Search For Title: " TextAlignment="Right" VerticalAlignment="Center" FontSize="14"/>
             <TextBox Name="txtSearch" FontSize="16" Foreground="Gray" Width="400" Padding="5" Margin="5" Text="{Binding ElementName=txtTitle,Path=Text,Mode=TwoWay}"/>
             <Button Content="Search" Name="btnSearch" Width="80" Height="34" Click="btnAdvSearch_Click"/>
             <Button Content="Clear" Name="btnClear" Width="80" Height="34" Margin="10,0,0,0" Click="btnClear_Click"/>
         </StackPanel>
-        
+
         <Button Content="Advance Search" Name="btnAdvSearchClick" Grid.Column="1" Grid.Row="3" Height="33" Width="120" HorizontalAlignment="Center" VerticalAlignment="Center" Click="btnAdvSearchClick_Click"/>
-        
+
         <Border Name="brAdvSearch" Grid.Row="3" Grid.RowSpan="2" Grid.Column="1" CornerRadius="6"  VerticalAlignment="Top"  HorizontalAlignment="Stretch" Width="650"
                 BorderBrush="Gray"
                 Background="LightGray"
@@ -97,52 +99,55 @@
                         <ColumnDefinition Width="220"/>
                         <ColumnDefinition Width="100"/>
                         <ColumnDefinition Width="220"/>
+                        <ColumnDefinition Width="7*"/>
+                        <ColumnDefinition Width="3*"/>
                     </Grid.ColumnDefinitions>
 
-                    <TextBlock Grid.Row="1" Text="Category:"  VerticalAlignment="Top" />
-                    <ListBox  Grid.Row="1" Grid.Column="1"  Name="lbCategory"  VerticalAlignment="Stretch" Margin="5" SelectionChanged="lbCategory_SelectionChanged" />
+                    <TextBlock Grid.Row="1" Text="Category:"  VerticalAlignment="Top" Margin="5,5,4,0" />
+                    <ListBox  Grid.Row="1" Grid.Column="1"  Name="lbCategory"  VerticalAlignment="Stretch" Margin="6,5,3,5" SelectionChanged="lbCategory_SelectionChanged" />
 
-                    <TextBlock Grid.Row="2" Text="Main Class:"  VerticalAlignment="Top" />
-                    <ListBox  Grid.Row="2" Grid.Column="1"  Name="lbMainClass"  VerticalAlignment="Stretch" Margin="5" SelectionChanged="lbMainClass_SelectionChanged" />
+                    <TextBlock Grid.Row="2" Text="Main Class:"  VerticalAlignment="Top" Margin="5,5,4,0" />
+                    <ListBox  Grid.Row="2" Grid.Column="1"  Name="lbMainClass"  VerticalAlignment="Stretch" Margin="6,5,3,5" SelectionChanged="lbMainClass_SelectionChanged" />
 
-                    <TextBlock Grid.Row="2" Grid.Column="2" Text="Sub Category:"   VerticalAlignment="Top" />
-                    <ListBox  Grid.Row="2" Grid.Column="4" Name="lbSubcategory"  VerticalAlignment="Stretch" Margin="5" />
+                    <TextBlock Grid.Row="2" Grid.Column="2" Text="Sub Category:"   VerticalAlignment="Top" Margin="7,5,2,0" />
+                    <ListBox  Grid.Row="2" Grid.Column="3" Name="lbSubcategory"  VerticalAlignment="Stretch" Margin="8,5,1,5" />
 
-                    <TextBlock Grid.Row="3" Grid.Column="0" Text="Title:"/>
-                    <TextBox Grid.Row="3" Name="txtTitle" Grid.Column="1" Height="25" Text="{Binding ElementName=txtSearch,Path=Text,Mode=TwoWay}" Margin="5,5,5,0"/>
+                    <TextBlock Grid.Row="3" Grid.Column="0" Text="Title:" Margin="5,5,4,5"/>
+                    <TextBox Grid.Row="3" Name="txtTitle" Grid.Column="1" Height="25" Text="{Binding ElementName=txtSearch,Path=Text,Mode=TwoWay}" Margin="6,5,3,0"/>
                     <!--<acb:AutoCompleteComboBox Grid.Row="2" Name="cmbTitle" Grid.Column="1" ItemsSource="{Binding Titles,Mode=TwoWay}" Height="25" Margin="5,5,5,0"/>-->
                     <!--<ComboBox Grid.Row="2" Grid.Column="1" Name="cmbTitle" Height="25" Margin="5,5,5,0"> </ComboBox>-->
 
-                    <TextBlock Grid.Row="3" Grid.Column="2" Text="{Binding ElementName=sliderDuration,Path=Value,StringFormat='Duration: ({0:#.#})'}"   />
-                    <TextBlock Grid.Row="3" Grid.Column="3" Text=" 0"  HorizontalAlignment="Left" />
-                    <TextBlock Grid.Row="3" Grid.Column="3" Text="{Binding ElementName=sliderDuration,Path=Maximum}"  HorizontalAlignment="Right" />
-                    <Slider Grid.Row="3" Grid.Column="3" Name="sliderDuration" Height="25" Margin="15,5,45,0" SmallChange="0.5" LargeChange="1" />
+                    <TextBlock Grid.Row="3" Grid.Column="2" Text="{Binding ElementName=sliderDuration,Path=Value,StringFormat='Duration: ({0:#.#})'}" Margin="7,5,2,5"   />
+                    <TextBlock Grid.Row="3" Grid.Column="3" Text=" 0"  HorizontalAlignment="Left" Margin="8,5,0,5" />
+                    <TextBlock Grid.Row="3" Grid.Column="3" Text="{Binding ElementName=sliderDuration,Path=Maximum}"  HorizontalAlignment="Right" Margin="0,5,1,5" />
+                    <Slider Grid.Row="3" Grid.Column="3" Name="sliderDuration" Height="25" Margin="18,5,41,0" SmallChange="0.5" LargeChange="1" />
 
-                    <TextBlock Grid.Row="4" Grid.Column="0" Text="Director:" />
-                    <ComboBox Grid.Row="4" Grid.Column="1" Name="cmbDirector" Height="25" Margin="5,5,5,0" ItemsSource="{Binding Directors,Mode=TwoWay}"/>
- 
-                    <TextBlock Grid.Row="4" Grid.Column="2" Text="Format:"   />
-                    <TextBlock Grid.Row="4" Grid.Column="2" Text="Cast &amp; Crew:" Visibility="Collapsed" />
+                    <TextBlock Grid.Row="4" Grid.Column="0" Text="Director:" Margin="5,5,4,5" />
+                    <ComboBox Grid.Row="4" Grid.Column="1" Name="cmbDirector" Height="25" Margin="6,5,3,0" ItemsSource="{Binding Directors,Mode=TwoWay}"/>
+
+                    <TextBlock Grid.Row="4" Grid.Column="2" Text="Format:" Margin="7,5,2,5"   />
+                    <TextBlock Grid.Row="4" Grid.Column="2" Text="Cast &amp; Crew:" Visibility="Collapsed" Margin="7,5,2,5" />
                     <!--<ComboBox Grid.Row="5" Grid.Column="3" Name="cmbCastCrew" Height="25" Margin="5,5,5,0"  ItemsSource="{Binding CastCrews,Mode=TwoWay}"></ComboBox>-->
 
-                    <StackPanel Orientation="Horizontal" Grid.Row="4" Grid.Column="3" Margin="5" VerticalAlignment="Center">
+                    <StackPanel Orientation="Horizontal" Grid.Row="4" Grid.Column="3" Margin="8,8,1,8" VerticalAlignment="Center">
                         <RadioButton GroupName="rbBlackWhiteColor" Content="Both " Name="rbBoth" IsChecked="True"/>
                         <RadioButton GroupName="rbBlackWhiteColor" Content="Color " Name="rbColor" />
                         <RadioButton GroupName="rbBlackWhiteColor" Content="Black &amp; White "  Name="rbBW"/>
                     </StackPanel>
 
-                    <TextBlock Grid.Row="5" Grid.Column="0" Text="Language:" />
-                    <ComboBox Grid.Row="5" Grid.Column="1" Name="cmbLanguage" Height="25" Margin="5,5,5,0" ItemsSource="{Binding Languages,Mode=TwoWay}"/>
+                    <TextBlock Grid.Row="5" Grid.Column="0" Text="Language:" Margin="5,5,4,5" />
+                    <ComboBox Grid.Row="5" Grid.Column="1" Name="cmbLanguage" Height="25" Margin="6,5,3,0" ItemsSource="{Binding Languages,Mode=TwoWay}"/>
 
-                    <TextBlock Grid.Row="5" Grid.Column="2" Text="Year:" />
-                    <ComboBox Grid.Row="5" Grid.Column="3" Name="cmbYear" Height="25" Margin="5,5,5,0" ItemsSource="{Binding Years,Mode=TwoWay}"/>
+                    <TextBlock Grid.Row="5" Grid.Column="2" Text="Year:" Margin="7,5,2,5" />
+                    <ComboBox Grid.Row="5" Grid.Column="3" Name="cmbYear" Height="25" Margin="8,5,1,0" ItemsSource="{Binding Years,Mode=TwoWay}"/>
 
-                    <TextBlock Grid.Row="6" Grid.Column="0" Text="Keyword:" />
-                    <TextBox Grid.Row="6" Grid.Column="1" Grid.ColumnSpan="3" Name="txtKeyword" Height="25" Margin="5,5,5,0" Text="{Binding Keyword,Mode=TwoWay}"/>
- 
-                    <StackPanel Orientation="Horizontal" Grid.ColumnSpan="5" Grid.Row="8" HorizontalAlignment="Center" VerticalAlignment="Center">
-                        <Button Content="Search" Name="btnAdvSearch" Grid.Column="1" Grid.Row="7" Height="33" Width="120" HorizontalAlignment="Center" VerticalAlignment="Center" Click="btnAdvSearch_Click"/>
-                        <Button Content="Close" Name="btnHideAdvSearch" Grid.Column="3" Grid.Row="7" Height="33" Width="120" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="100,0,0,0" Click="btnHideAdvSearch_Click"/>
+                    <TextBlock Grid.Row="6" Grid.Column="0" Text="Keyword:" Margin="5,5,4,5" />
+                    <TextBox Grid.Row="6" Grid.Column="1" Grid.ColumnSpan="3" Name="txtKeyword" Height="25" Margin="6,5,1,0" Text="{Binding Keyword,Mode=TwoWay}"/>
+
+                    <StackPanel Orientation="Horizontal" Grid.ColumnSpan="3" Grid.Row="8" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Column="1" Margin="50,1,148,1">
+                        <Button Content="Search" Name="btnAdvSearch" Grid.Column="1" Grid.Row="7" Height="33" Width="100" HorizontalAlignment="Center" VerticalAlignment="Center" Click="btnAdvSearch_Click"/>
+                        <Button Content="Clear" Name="btnAdvClear" Grid.Column="2" Grid.Row="7" Height="33" Width="100" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="20,0" Click="btnAdvClear_Click"/>
+                        <Button Content="Close" Name="btnHideAdvSearch" Grid.Column="3" Grid.Row="7" Height="33" Width="100" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,0,0,0" Click="btnHideAdvSearch_Click"/>
                     </StackPanel>
                 </Grid>
             </StackPanel>

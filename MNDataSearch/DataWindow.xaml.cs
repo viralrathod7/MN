@@ -26,6 +26,7 @@ namespace MNDataSearch
             InitializeComponent();
             this.SizeChanged += DataWindow_SizeChanged;
             this.DataContext = vm;
+            this.PreviewKeyUp += DataWindow_PreviewKeyUp;
             PopulateCategories();
 
             sliderDuration.Minimum = Helper.GlobalClass.Data.Min(v => v.Duration);
@@ -51,11 +52,19 @@ namespace MNDataSearch
             FilterData();
         }
 
+        private void DataWindow_PreviewKeyUp(object sender, KeyEventArgs e)
+        {
+            if (e.Key.Equals(Key.Escape))
+            {
+                dgResult.SelectedItems.Clear();
+            }
+        }
+
         private void DataWindow_SizeChanged(object sender, SizeChangedEventArgs e)
         {
             if (dgResult != null && e.NewSize.Height - 125 - 40 - 40 > 100)
             {
-                dgResult.Height = e.NewSize.Height - 125 - 40 - 40; 
+                dgResult.Height = e.NewSize.Height - 125 - 40 - 40;
             }
         }
 
@@ -65,15 +74,7 @@ namespace MNDataSearch
             {
                 CatalougeDetail cd = new CatalougeDetail();
                 cd.DataContext = dgResult.SelectedItem;
-                var response = cd.ShowDialog();
-                if (response.HasValue && response.Value)
-                {
-                    //PrintDialog pd = new PrintDialog();
-                    //if (pd.ShowDialog() == true)
-                    //{
-                    //    pd.PrintVisual(cd, "Catlouge Print");
-                    //}
-                }
+                cd.ShowDialog();
             }
         }
 
@@ -237,6 +238,28 @@ namespace MNDataSearch
         private void btnClear_Click(object sender, RoutedEventArgs e)
         {
             txtSearch.Text = "";
+        }
+
+        private void btnAdvClear_Click(object sender, RoutedEventArgs e)
+        {
+            PopulateCategories();
+
+            sliderDuration.Minimum = Helper.GlobalClass.Data.Min(v => v.Duration);
+            sliderDuration.Maximum = Helper.GlobalClass.Data.Max(v => v.Duration);
+            sliderDuration.Value = Helper.GlobalClass.Data.Max(v => v.Duration);
+
+            txtSearch.Text = "";
+            lbCategory.SelectedValue = all;
+            lbSubcategory.SelectedValue = all;
+            cmbDirector.SelectedValue = all;
+            lbMainClass.SelectedValue = all;
+            cmbLanguage.SelectedValue = all;
+            cmbYear.SelectedValue = all;
+            txtKeyword.Text = "";
+
+            rbBoth.IsChecked = true;
+
+            FilterData();
         }
     }
 }

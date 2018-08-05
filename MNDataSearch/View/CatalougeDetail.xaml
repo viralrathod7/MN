@@ -22,6 +22,7 @@
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
                 <RowDefinition Height="30"/>
                 <RowDefinition Height="25"/>
                 <RowDefinition Height="25"/>
@@ -32,18 +33,19 @@
                 <Image Grid.Row="1" Source="{Binding ImagePath,NotifyOnValidationError=True, ValidatesOnDataErrors=True ,ValidatesOnNotifyDataErrors=True,TargetNullValue=Images/NoImage.png,FallbackValue=Images/NoImage.png}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
             </Border>
 
-            <TextBox Background="Transparent" Grid.Row="2" Text="{Binding Synopsis,StringFormat='Synopsis:  {0}',FallbackValue=Synopsis}"  HorizontalAlignment="Left" VerticalAlignment="Center" TextAlignment="Justify"  TextWrapping="Wrap"
-                       Margin="10,5,10,5" Height="70" ScrollViewer.VerticalScrollBarVisibility="Auto" IsReadOnly="True" />
+            <TextBox Background="Transparent" Grid.Row="2" Text="{Binding Synopsis,StringFormat='Synopsis:  {0}',FallbackValue=Synopsis}"  HorizontalAlignment="Stretch" VerticalAlignment="Center" TextAlignment="Justify"  TextWrapping="Wrap"
+                       Margin="10,5,10,5" Height="90" ScrollViewer.VerticalScrollBarVisibility="Auto" IsReadOnly="True" />
 
             <TextBlock Grid.Row="3" Text="{Binding Category,StringFormat='Category:  {0}',FallbackValue=Category}"  HorizontalAlignment="Left" VerticalAlignment="Center" Margin="10,5,10,5" TextWrapping="Wrap" Height="auto"/>
-            <TextBlock Grid.Row="4" Text="{Binding SubCategory,StringFormat='Sub Category:  {0}',FallbackValue=SubCategory}"  VerticalAlignment="Center" HorizontalAlignment="Left" Margin="10,5,10,5" TextWrapping="Wrap" Height="auto"/>
-            <TextBlock Grid.Row="5" Text="{Binding Director,StringFormat='Director:  {0}',FallbackValue=Director}"  VerticalAlignment="Center" Margin="10,5,10,5" TextWrapping="Wrap" Height="auto"/>
-            <TextBlock Grid.Row="7" Text="{Binding Language,StringFormat='Language:  {0}',FallbackValue=English}"  VerticalAlignment="Center" Margin="10,5,5,5" TextWrapping="Wrap" Height="auto"/>
-            <TextBlock Grid.Row="7" Text="{Binding Year,StringFormat='  Year:  {0}    ',FallbackValue=1995}"  VerticalAlignment="Center" HorizontalAlignment="Center" Margin="5" TextWrapping="Wrap" Height="auto"/>
-            <TextBlock Grid.Row="7" Text="{Binding Duration,StringFormat='  Duration:  {0} Min   ',FallbackValue=10.5}"  VerticalAlignment="Center" HorizontalAlignment="Right" Margin="5" TextWrapping="Wrap" Height="auto"/>
+            <TextBlock Grid.Row="4" Text="{Binding MainClass,StringFormat='Main Class:  {0}',FallbackValue=MainClass}"  VerticalAlignment="Center" HorizontalAlignment="Left" Margin="10,5,10,5" TextWrapping="Wrap" Height="auto"/>
+            <TextBlock Grid.Row="5" Text="{Binding SubCategory,StringFormat='Sub Class:  {0}',FallbackValue=SubCategory}"  VerticalAlignment="Center" HorizontalAlignment="Left" Margin="10,5,10,5" TextWrapping="Wrap" Height="auto"/>
+            <TextBlock Grid.Row="6" Text="{Binding Director,StringFormat='Director:  {0}',FallbackValue=Director}"  VerticalAlignment="Center" Margin="10,5,10,5" TextWrapping="Wrap" Height="auto"/>
+            <TextBlock Grid.Row="8" Text="{Binding Language,StringFormat='Language:  {0}',FallbackValue=English}"  VerticalAlignment="Center" Margin="10,5,5,5" TextWrapping="Wrap" Height="auto"/>
+            <TextBlock Grid.Row="8" Text="{Binding Year,StringFormat='  Year:  {0}    ',FallbackValue=1995}"  VerticalAlignment="Center" HorizontalAlignment="Center" Margin="5" TextWrapping="Wrap" Height="auto"/>
+            <TextBlock Grid.Row="8" Text="{Binding Duration,StringFormat='  Duration:  {0} Min   ',FallbackValue=10.5}"  VerticalAlignment="Center" HorizontalAlignment="Right" Margin="5" TextWrapping="Wrap" Height="auto"/>
 
-            <Button Grid.Row="9" Content="Print" Width="100" Height="25" Click="btnPrint_Click" HorizontalAlignment="Center" Margin="-120,0,0,0" Background="White" />
-            <Button Grid.Row="9" Content="Close" Width="100" Height="25" Click="btnClose_Click" HorizontalAlignment="Center" Margin="120,0,0,0" Background="White" />
+            <Button Grid.Row="10" Content="Print" Width="100" Height="25" Click="btnPrint_Click" HorizontalAlignment="Center" Margin="-120,0,0,0" Background="White" />
+            <Button Grid.Row="10" Content="Close" Width="100" Height="25" Click="btnClose_Click" HorizontalAlignment="Center" Margin="120,0,0,0" Background="White" />
         </Grid>
  
         <Canvas Name="canvas" Height="600" Margin="5" Visibility="Collapsed">

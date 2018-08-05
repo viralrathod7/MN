@@ -1,13 +1,15 @@
 ﻿<Window x:Class="MNDataSearch.View.SelectColumns"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" Height="500" Width="250"
+        xmlns:helper="clr-namespace:MNDataSearch.Helper"
         ResizeMode="NoResize" WindowState="Normal" WindowStyle="None" AllowsTransparency="True"
         WindowStartupLocation="CenterScreen" Background="Transparent">
     <Window.Resources>
+        <helper:VisibilityToBoolConverter x:Key="VisibilityToBool"/>
         <Style TargetType="TextBlock">
             <Setter Property="Foreground" Value="Black"/>
             <Setter Property="FontSize" Value="14"/>
-        </Style>
+        </Style> 
     </Window.Resources>
     <Grid Background="Transparent">
         <Grid.RowDefinitions>
@@ -31,7 +33,7 @@
                 </ListBox.ItemsPanel>
                 <ListBox.ItemTemplate>
                     <DataTemplate>
-                        <CheckBox Width="100"  Margin="5" Content="{Binding Header}" IsChecked="{Binding IsReadOnly,Mode=TwoWay}" Checked="CheckBox_Checked" Unchecked="CheckBox_Unchecked" />
+                        <CheckBox Width="100"  Margin="5" Content="{Binding Header}" IsChecked="{Binding Visibility, Converter={StaticResource VisibilityToBool},Mode=TwoWay}" Checked="CheckBox_Checked" Unchecked="CheckBox_Unchecked" />
                     </DataTemplate>
                 </ListBox.ItemTemplate>
             </ListBox>
