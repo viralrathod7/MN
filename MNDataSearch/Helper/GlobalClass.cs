@@ -17,10 +17,12 @@ namespace MNDataSearch.Helper
         public static string ExcelFileLocation = @"C:\Users\Khushi\Desktop\RajivTomar\Search Engine.xlsx";
         public static string ConnectionString = @"Provider=Microsoft.Jet.OLEDB.4.0;Data Source=" + AccessDatabaseLocation + ";Persist Security Info=True";
         public static string ConnectionStringExcel = @"Provider=Microsoft.ACE.OLEDB.12.0;Data Source = " + ExcelFileLocation + ";" + "Extended Properties = 'Excel 12.0 Xml;HDR=YES;'";
+        public static double LeftPrintingMargin = 15;
+        public static double DataScaleFactor = 0.97; 
         //Provider=Microsoft.Jet.OLEDB.4.0;Data Source=C:\Users\Khushi\Desktop\RajivTomar\MNDataSearch\MNDataSearch\App_Data\SearchCatlouge.mdb;Persist Security Info=True
         public static List<Catlouge> Data = new List<Catlouge>();
         public static List<string> Categories = new List<string>();
-        public static List<MainClass> MainClass = new List<MainClass>();
+        public static List<MainClass> MainClass = new List<MainClass>(); 
 
         public static void LoadSettingsAsync()
         {
@@ -62,6 +64,19 @@ namespace MNDataSearch.Helper
             }
             if (!IsFolderExists())
                 MessageBox.Show("Images folder does not exist : " + ImagesFolderPath);
+
+            if (ConfigurationSettings.AppSettings.HasKeys() && ConfigurationSettings.AppSettings.AllKeys.Contains("LeftPrintingMargin"))
+            {
+                LeftPrintingMargin = Convert.ToInt32(ConfigurationSettings.AppSettings["LeftPrintingMargin"]);
+                if (LeftPrintingMargin == 0)
+                    LeftPrintingMargin = 15;
+            }
+            if (ConfigurationSettings.AppSettings.HasKeys() && ConfigurationSettings.AppSettings.AllKeys.Contains("DataScaleFactor"))
+            {
+                DataScaleFactor = Convert.ToDouble(ConfigurationSettings.AppSettings["DataScaleFactor"]);
+                if (DataScaleFactor == 0)
+                    DataScaleFactor = 0.97;
+            }
         }
 
         public static bool IsDatabaseExists()

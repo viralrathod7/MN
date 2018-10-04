@@ -11,7 +11,7 @@
         </Style>
     </Window.Resources>
     <Grid Background="Transparent">
-        <Border CornerRadius="10" BorderBrush="Black" BorderThickness="2" Background="PowderBlue" Grid.RowSpan="20"  HorizontalAlignment="Stretch" VerticalAlignment="Stretch" />
+        <Border CornerRadius="10" BorderBrush="Black" BorderThickness="2" Background="#FFE1F0F1" Grid.RowSpan="20"  HorizontalAlignment="Stretch" VerticalAlignment="Stretch" />
         <Grid Background="Transparent" Name="gridFix" Visibility="Visible">
             <Grid.RowDefinitions>
                 <RowDefinition Height="40"/>

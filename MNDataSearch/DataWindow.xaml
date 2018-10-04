@@ -36,8 +36,7 @@
 
             <StackPanel Grid.Column="2" Orientation="Horizontal" HorizontalAlignment="Left" VerticalAlignment="Top">
                 <TextBlock Text="Search For Title :" VerticalAlignment="Center" Margin="10"/>
-                <TextBox Name="txtSearch" Style="{DynamicResource SearchBoxStyle}"
-                         FontSize="16" Foreground="Gray"  Width="500" Padding="5" Margin="3,3,10,3" SpellCheck.IsEnabled="True" TextChanged="txtSearch_TextChanged" />
+                <TextBox Name="txtSearch" FontSize="16" Foreground="Gray"  Width="500" Padding="5" Margin="3,3,10,3" SpellCheck.IsEnabled="True" TextChanged="txtSearch_TextChanged" />
                 <Button Name="btnAdvanceSearch" Height="33" Width="80" Content="Search" Foreground="Gray" FontSize="14"  HorizontalAlignment="Center" Click="btnAdvSearch_Click"/>
                 <Button Name="btnClear" Height="33" Width="80" Content="Clear" Foreground="Gray" FontSize="14" Margin="10,0,0,0"  HorizontalAlignment="Center" Click="btnClear_Click"/>
                 <Button Name="btnPrint" Height="33" Width="80" Content="Print" Foreground="Gray" FontSize="14" Margin="10,0,0,0"  HorizontalAlignment="Center"  Click="btnPrint_Click"/>
@@ -48,7 +47,7 @@
             <GridSplitter Grid.Column="1" Grid.RowSpan="10" Width="2" Margin="-5,0,-5,0" VerticalAlignment="Stretch"/>
 
             <StackPanel Grid.Row="1" Grid.Column="2" Margin="5,0,5,0"  Name="spDgContainer" VerticalAlignment="Top" >
-                <DataGrid Name="dgResult" helper:SearchOperations.SearchTerm="{Binding ElementName=txtSearch, Path=Text}" 
+                <DataGrid Name="dgResult" helper:SearchOperations.SearchTerm="{Binding ElementName=txtKeyword, Path=Text}" 
                           SelectionMode="Extended" Height="540"  SelectionUnit="FullRow" VerticalAlignment="Top"  AutoGenerateColumns="False" MouseDoubleClick="dgResult_MouseDoubleClick" >
                     <DataGrid.CellStyle>
                         <Style TargetType="{x:Type DataGridCell}">
@@ -80,17 +79,18 @@
                             </DataGridTextColumn.HeaderTemplate>
                         </DataGridTextColumn>
                         <DataGridTextColumn CellStyle="{StaticResource TitleCell}" ElementStyle="{StaticResource DataGridElementStyle}" MinWidth="150" MaxWidth="200" Header="Title" IsReadOnly="True" Binding="{Binding Title}"/>
-                        <DataGridTextColumn  MinWidth="120" MaxWidth="150" ElementStyle="{StaticResource DataGridElementStyle}" Header="Category" IsReadOnly="True" Binding="{Binding Category}"/>
-                        <DataGridTextColumn  MinWidth="120" MaxWidth="150" ElementStyle="{StaticResource DataGridElementStyle}" Header="Main Class" IsReadOnly="True" Binding="{Binding MainClass}"/>
-                        <DataGridTextColumn  MinWidth="120" MaxWidth="150" ElementStyle="{StaticResource DataGridElementStyle}" Header="Sub Class" IsReadOnly="True" Binding="{Binding SubCategory}"/>
-                        <DataGridTextColumn  MinWidth="120" MaxWidth="150" ElementStyle="{StaticResource DataGridElementStyle}" Header="Main Class2" Visibility="Collapsed" IsReadOnly="True" Binding="{Binding MainClass2}"/>
-                        <DataGridTextColumn  MinWidth="120" MaxWidth="150" ElementStyle="{StaticResource DataGridElementStyle}" Header="Sub Class2" Visibility="Collapsed" IsReadOnly="True" Binding="{Binding SubCategory2}"/>
-                        <DataGridTextColumn  MinWidth="100" MaxWidth="120" ElementStyle="{StaticResource DataGridElementStyle}" Header="Director" IsReadOnly="True" Binding="{Binding Director}"/>
+                        <DataGridTextColumn CellStyle="{StaticResource CategoryCell}" ElementStyle="{StaticResource DataGridElementStyle}"   MinWidth="120" MaxWidth="150" Header="Category" IsReadOnly="True" Binding="{Binding Category}"/>
+                        <DataGridTextColumn CellStyle="{StaticResource MainClassCell}" MinWidth="120" MaxWidth="150" ElementStyle="{StaticResource DataGridElementStyle}" Header="Main Class" IsReadOnly="True" Binding="{Binding MainClass}"/>
+                        <DataGridTextColumn CellStyle="{StaticResource SubCategoryCell}" MinWidth="120" MaxWidth="150" ElementStyle="{StaticResource DataGridElementStyle}" Header="Sub Class" IsReadOnly="True" Binding="{Binding SubCategory}"/>
+                        <DataGridTextColumn CellStyle="{StaticResource MainClass2Cell}" MinWidth="120" MaxWidth="150" ElementStyle="{StaticResource DataGridElementStyle}" Header="Main Class2" Visibility="Collapsed" IsReadOnly="True" Binding="{Binding MainClass2}"/>
+                        <DataGridTextColumn CellStyle="{StaticResource SubCategory2Cell}" MinWidth="120" MaxWidth="150" ElementStyle="{StaticResource DataGridElementStyle}" Header="Sub Class2" Visibility="Collapsed" IsReadOnly="True" Binding="{Binding SubCategory2}"/>
+                        <DataGridTextColumn CellStyle="{StaticResource DirectorCell}"  MinWidth="100" MaxWidth="120" ElementStyle="{StaticResource DataGridElementStyle}" Header="Director" IsReadOnly="True" Binding="{Binding Director}"/>
                         <!--<DataGridTextColumn MinWidth="080" MaxWidth="100" Header="Producer" IsReadOnly="True" Binding="{Binding Producer}"/>-->
-                        <DataGridTextColumn  MinWidth="050" MaxWidth="65" Header="Language" IsReadOnly="True" Binding="{Binding Language}"/>
-                        <DataGridTextColumn  MinWidth="050" MaxWidth="40" Header="Year" IsReadOnly="True" Binding="{Binding Year}"/>
-                        <DataGridTextColumn  MinWidth="050" MaxWidth="100" Header="Duration" IsReadOnly="True" Binding="{Binding Duration}"/>
-                        <DataGridTextColumn  MinWidth="050" MaxWidth="100" Header="B&amp;W" IsReadOnly="True" Binding="{Binding bW}"/>
+                        <DataGridTextColumn CellStyle="{StaticResource LanguageCell}" MinWidth="050" MaxWidth="65" Header="Language" IsReadOnly="True" Binding="{Binding Language}"/>
+                        <DataGridTextColumn CellStyle="{StaticResource YearCell}" MinWidth="050" MaxWidth="40" Header="Year" IsReadOnly="True" Binding="{Binding Year}"/>
+                        <DataGridTextColumn CellStyle="{StaticResource DurationCell}" MinWidth="050" MaxWidth="100" Header="Duration" IsReadOnly="True" Binding="{Binding Duration}"/>
+                        <DataGridTextColumn CellStyle="{StaticResource BWCell}" MinWidth="050" MaxWidth="100" Header="B&amp;W" IsReadOnly="True" Binding="{Binding bW}"/>
+                        <DataGridTextColumn MinWidth="120" MaxWidth="150" ElementStyle="{StaticResource DataGridElementStyle}" Header="Synopsis" Visibility="Collapsed" IsReadOnly="True" Binding="{Binding Synopsis}"/>
                     </DataGrid.Columns>
                 </DataGrid>
             </StackPanel>
@@ -165,7 +165,7 @@
                         <ComboBox Grid.Row="10" Grid.Column="1" Name="cmbCastCrew" Height="25" Margin="5,5,5,0" Width="240" ></ComboBox>-->
 
                         <TextBlock Grid.Row="10" Grid.Column="0" Text="Keyword:" />
-                        <TextBox Grid.Row="10" Grid.Column="1" Name="txtKeyword" Height="25" Margin="5,5,5,0" Text="{Binding Keyword}" TextChanged="txtKeyword_TextChanged" />
+                        <TextBox Grid.Row="10" Grid.Column="1" Name="txtKeyword" Style="{DynamicResource SearchBoxStyle}" Height="25" Margin="5,5,5,0" Text="{Binding Keyword}" TextChanged="txtKeyword_TextChanged" />
 
                         <Button Content="Search" Name="btnAdvSearch" Grid.Column="1" Grid.Row="11" Height="25" Width="90" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="5,5,5,0" Click="btnAdvSearch_Click"/>
                         <Button Content="Clear" Name="btnAdvClear" Grid.Column="1" Grid.Row="11" Height="25" Width="88" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="100,5,5,0" Click="btnAdvClear_Click"/>

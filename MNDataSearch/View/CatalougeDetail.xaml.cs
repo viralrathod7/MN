@@ -1,7 +1,9 @@
-﻿using System;
+﻿using MNDataSearch.Helper;
+using System;
 using System.Printing;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Documents;
 using System.Windows.Input;
 
 namespace MNDataSearch.View
@@ -53,7 +55,8 @@ namespace MNDataSearch.View
             pd.PrintTicket.PageOrientation = System.Printing.PageOrientation.Landscape;
             if (pd.ShowDialog() == true)
             {
-                pd.PrintVisual(this, "Catlouge Details");
+                FixedDocument document = PrintHelper.CreateSinglePageDocument(this);
+                pd.PrintDocument(document.DocumentPaginator, "Catalouge Detail");
             }
             DialogResult = true;
         }

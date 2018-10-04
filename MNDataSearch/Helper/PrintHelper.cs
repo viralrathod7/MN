@@ -15,6 +15,7 @@ namespace MNDataSearch.Helper
             int dpi = 96;
             int RowCount = 0;
             double Total_Width = 0;
+            int VisbileColumnLastIndex = 0; // Visbile Column Last index
 
             FixedDocument fixedDocument = new FixedDocument();
             double temp_ActualHeight = double.NaN;
@@ -25,14 +26,20 @@ namespace MNDataSearch.Helper
             ScrollBarVisibility temp_ActualHorizontalScrollBarVisibility = ScrollBarVisibility.Auto;
             fixedDocument.DocumentPaginator.PageSize = new Size(dpi * 11, dpi * 8.5);
             try
-            {
+            { 
                 foreach (object data in dg.ItemsSource) RowCount++;
                 foreach (DataGridColumn dgc in dg.Columns)
                 {
                     if (dgc.Visibility == Visibility.Visible)
+                    {
                         Total_Width += dgc.ActualWidth;
+                        VisbileColumnLastIndex = dg.Columns.IndexOf(dgc);
+                    }
                 }
                 int Rows_Per_Page = 40; // Total rows to show Per Page
+
+                dg.RenderTransform = new ScaleTransform(GlobalClass.DataScaleFactor, GlobalClass.DataScaleFactor);//Scale 1 is normal 0.97 is smaller in size
+                dg.UpdateLayout();
 
                 for (int cnt = 1; cnt <= Math.Ceiling((double)RowCount / Rows_Per_Page) + 1; cnt++)
                 {
@@ -42,7 +49,7 @@ namespace MNDataSearch.Helper
                     if (Remaining < 1) break;
 
                     FixedPage inner_page = new FixedPage();
-                    inner_page.Background = Brushes.Gray;
+                    //inner_page.Background = Brushes.Gray;
                     inner_page.Width = dpi * 11;
                     inner_page.Height = dpi * 8.5;
 
@@ -58,7 +65,7 @@ namespace MNDataSearch.Helper
 
                         //Setting control for Proper GUI
                         //dg.Margin = new Thickness(-100, temp_Margin.Top, -2000, temp_Margin.Bottom);
-                        dg.Margin = new Thickness(0, temp_Margin.Top, 0, temp_Margin.Bottom);
+                        dg.Margin = new Thickness(GlobalClass.LeftPrintingMargin, temp_Margin.Top + 10, 2, temp_Margin.Bottom + 2);
                         dg.Width = Total_Width + 50;
                         inner_page.Width = (Total_Width > inner_page.Width) ? Total_Width + 25 : inner_page.Width;
                         dg.Height = inner_page.Height + 50;// + 170;
@@ -79,7 +86,7 @@ namespace MNDataSearch.Helper
                         {
                             dg.SelectedIndex = RowCount - 1;
                             dg.UpdateLayout();
-                            dg.ScrollIntoView(dg.SelectedItem, dg.Columns[dg.Columns.Count - 1]);
+                            dg.ScrollIntoView(dg.SelectedItem, dg.Columns[VisbileColumnLastIndex]);
                             dg.UpdateLayout();
                             dg.SelectedIndex = (cnt - 1) * Rows_Per_Page;
                             dg.UpdateLayout();
@@ -93,7 +100,7 @@ namespace MNDataSearch.Helper
 
                         if (dg.SelectedIndex >= RowCount) dg.SelectedIndex = RowCount - 1;
 
-                        dg.ScrollIntoView(dg.SelectedItem, dg.Columns[dg.Columns.Count - 1]);
+                        dg.ScrollIntoView(dg.SelectedItem, dg.Columns[VisbileColumnLastIndex]);
                     }
 
                     dg.UpdateLayout();
@@ -133,8 +140,53 @@ namespace MNDataSearch.Helper
                 dg.RowHeight = temp_RowHeight;
                 //dg.IsEnabled = true;
                 dg.SelectedIndex = 0;
-                dg.ScrollIntoView(dg.SelectedItem, dg.Columns[dg.Columns.Count - 1]);
+                dg.RenderTransform = new ScaleTransform(1, 1);
                 dg.UpdateLayout();
+                dg.ScrollIntoView(dg.SelectedItem, dg.Columns[VisbileColumnLastIndex]);
+                dg.UpdateLayout();
+            }
+
+            return fixedDocument;
+        }
+
+        public static FixedDocument CreateSinglePageDocument(ContentControl uielement)
+        {
+            int dpi = 96;
+            FixedDocument fixedDocument = new FixedDocument();
+            fixedDocument.DocumentPaginator.PageSize = new Size(dpi * 11, dpi * 8.5);
+            try
+            {
+                PageContent page = new PageContent();
+                FixedPage inner_page = new FixedPage();
+                inner_page.Width = dpi * 11;
+                inner_page.Height = dpi * 8.5;
+
+                RenderTargetBitmap rtb = new RenderTargetBitmap((int)uielement.ActualWidth, (int)uielement.ActualHeight, dpi, dpi, PixelFormats.Default);
+                rtb.Render(uielement);
+                Image image = new Image
+                {
+                    Source = rtb,
+                    Height = uielement.ActualHeight,
+                    Width = uielement.ActualWidth,
+                    Margin = new Thickness(25) // Margin for the control
+                };
+
+                inner_page.Children.Add((UIElement)image);
+
+                //measure size of the layout
+                Size sz = new Size(dpi * 11, dpi * 8.5);
+                inner_page.Measure(sz);
+                inner_page.Arrange(new Rect(new Point(), sz));
+                inner_page.UpdateLayout();
+                ((IAddChild)page).AddChild(inner_page);
+                fixedDocument.Pages.Add(page);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Issue occurred while Exporting PDF: " + ex.Message);
+            }
+            finally
+            {
             }
 
             return fixedDocument;
